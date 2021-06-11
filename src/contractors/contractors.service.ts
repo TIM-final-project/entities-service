@@ -3,24 +3,36 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContractorEntity } from './contractor.entity';
 import { CreateContractorInput } from './dto/create-contractor.input';
+import { UpdateContractorInput } from './dto/update-contractor.input';
 
 @Injectable()
 export class ContractorsService {
-    constructor(
-        @InjectRepository(ContractorEntity)
-        private contractorRepository: Repository<ContractorEntity>
-    ) {}
+  constructor(
+    @InjectRepository(ContractorEntity)
+    private contractorRepository: Repository<ContractorEntity>,
+  ) {}
 
-    findAll(): Promise<ContractorEntity[]> {
-        return this.contractorRepository.find();
-    }
+  findAll(): Promise<ContractorEntity[]> {
+    return this.contractorRepository.find();
+  }
 
-    findOne(id: string): Promise<ContractorEntity> {
-        return this.contractorRepository.findOne(id);
-    }
+  findOne(id: string): Promise<ContractorEntity> {
+    return this.contractorRepository.findOne(id);
+  }
 
-    create(contractorInputDTO: CreateContractorInput): Promise<ContractorEntity> {
-        const contractor: ContractorEntity = contractorInputDTO;
-        return this.contractorRepository.save(contractor);
-    }
+  create(contractorInputDTO: CreateContractorInput): Promise<ContractorEntity> {
+    const contractor: ContractorEntity = contractorInputDTO;
+    return this.contractorRepository.save(contractor);
+  }
+
+  async update(
+    uuid: string,
+    contractorInputDTO: UpdateContractorInput,
+  ): Promise<ContractorEntity> {
+    const { cuit } = contractorInputDTO;
+    const contractor: ContractorEntity =
+      await this.contractorRepository.findOne(uuid);
+    this.contractorRepository.merge(contractor, contractorInputDTO);
+    return this.contractorRepository.save(contractor);
+  }
 }

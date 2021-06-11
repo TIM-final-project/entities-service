@@ -15,4 +15,29 @@ export class ContractorEntity {
     nullable: false,
   })
   name: string;
+
+  @Column({
+    nullable: false,
+  })
+  cuit: string;
+
+  @Column({
+    nullable: true,
+  })
+  street_address?: string;
+
+  @Column({
+    nullable: true,
+  })
+  number_address?: number;
+
+  @Column({
+    nullable: true,
+  })
+  city_address?: string;
+
+  @Column({
+    nullable: true,
+  })
+  province_address?: string;
 }

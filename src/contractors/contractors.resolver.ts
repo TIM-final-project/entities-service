@@ -1,9 +1,9 @@
-import { Inject, Query } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { ContractorEntity } from './contractor.entity';
+import { Inject } from '@nestjs/common';
+import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { ContractorSchema } from './contractor.schema';
 import { ContractorsService } from './contractors.service';
 import { CreateContractorInput } from './dto/create-contractor.input';
+import { UpdateContractorInput } from './dto/update-contractor.input';
 
 @Resolver((of) => ContractorSchema)
 export class ContractorsResolver {
@@ -12,12 +12,12 @@ export class ContractorsResolver {
   ) {}
 
   @Query((returns) => ContractorSchema)
-  async contractor(@Args('uuid') uuid: string): Promise<ContractorEntity> {
+  async contractor(@Args('uuid') uuid: string): Promise<ContractorSchema> {
     return await this.contractorService.findOne(uuid);
   }
 
   @Query((returns) => [ContractorSchema])
-  async contractors(): Promise<ContractorEntity[]> {
+  async contractors(): Promise<ContractorSchema[]> {
     return await this.contractorService.findAll();
   }
 
@@ -27,6 +27,16 @@ export class ContractorsResolver {
   ): Promise<ContractorSchema> {
     const contractorSchema: ContractorSchema =
       await this.contractorService.create(input);
+    return contractorSchema;
+  }
+
+  @Mutation((returns) => ContractorSchema)
+  async updateContractor(
+    @Args('uuid') uuid: string,
+    @Args('input') input: UpdateContractorInput,
+  ): Promise<ContractorSchema> {
+    const contractorSchema: ContractorSchema =
+      await this.contractorService.update(uuid, input);
     return contractorSchema;
   }
 }

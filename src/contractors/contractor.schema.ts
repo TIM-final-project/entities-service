@@ -1,11 +1,25 @@
-import { Field, ObjectType } from "@nestjs/graphql";
-
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ContractorSchema {
-    @Field()
-    uuid?: string;
+  @Field({nullable: true})
+  uuid?: string;
 
-    @Field()
-    name: string;
+  @Field()
+  name: string;
+
+  @Field({nullable: true})
+  cuit?: string;
+
+  @Field({nullable: true})
+  street_address?: string;
+
+  @Field({nullable: true})
+  number_address?: number;
+
+  @Field({nullable: true})
+  city_address?: string;
+
+  @Field({nullable: true})
+  province_address?: string;
 }

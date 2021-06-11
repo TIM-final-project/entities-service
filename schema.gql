@@ -1,0 +1,32 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ContractorSchema {
+  uuid: String
+  name: String!
+  cuit: String
+  street_address: String
+  number_address: Float
+  city_address: String
+  province_address: String
+}
+
+type Query {
+  contractor(uuid: String!): ContractorSchema!
+  contractors: [ContractorSchema!]!
+}
+
+type Mutation {
+  createContractor(name: String!, cuit: String!, street_address: String, number_address: Float, city_address: String, province_address: String): ContractorSchema!
+  updateContractor(input: UpdateContractorInput!, uuid: String!): ContractorSchema!
+}
+
+input UpdateContractorInput {
+  name: String
+  cuit: String!
+  street_address: String
+  number_address: Float
+  city_address: String
+  province_address: String
+}

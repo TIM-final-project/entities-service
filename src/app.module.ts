@@ -5,10 +5,10 @@ import { ContractorsModule } from './contractors/contractors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmConfigService } from './config';
+import { SecurityModule } from './security/security.module';
 
 @Module({
   imports: [
-    ContractorsModule,
     TypeOrmModule.forRootAsync({
       imports: [],
       inject: [],
@@ -17,6 +17,8 @@ import { TypeOrmConfigService } from './config';
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql'
     }),
+    ContractorsModule,
+    SecurityModule,
   ],
   controllers: [AppController],
   providers: [AppService],

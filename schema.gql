@@ -12,14 +12,31 @@ type ContractorSchema {
   province_address: String
 }
 
+type SecuritySchema {
+  id: ID
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
   contractor(uuid: String!): ContractorSchema!
   contractors: [ContractorSchema!]!
+  security(id: Float!): SecuritySchema!
+  securities: [SecuritySchema!]!
 }
 
 type Mutation {
   createContractor(name: String!, cuit: String!, street_address: String, number_address: Float, city_address: String, province_address: String): ContractorSchema!
   updateContractor(input: UpdateContractorInput!, uuid: String!): ContractorSchema!
+  createSecurity(name: String!, surname: String!, cuit: String!, birth_date: DateTime): SecuritySchema!
+  updateSecurity(input: UpdateSecurityInput!, id: Float!): SecuritySchema!
 }
 
 input UpdateContractorInput {
@@ -29,4 +46,11 @@ input UpdateContractorInput {
   number_address: Float
   city_address: String
   province_address: String
+}
+
+input UpdateSecurityInput {
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
 }

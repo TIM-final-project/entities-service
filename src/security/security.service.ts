@@ -13,10 +13,7 @@ export class SecurityService {
   ) {}
 
   findAll(): Promise<SecurityEntity[]> {
-    const response: Promise<SecurityEntity[]> = this.securityRepository.find();
-    console.log('RESPONSE FIND ALL: ', response);
-    return response;
-    // return this.securityRepository.find();
+    return this.securityRepository.find();
   }
 
   findOne(id: number): Promise<SecurityEntity> {
@@ -24,7 +21,6 @@ export class SecurityService {
   }
 
   create(securityInputDTO: CreateSecurityInput): Promise<SecurityEntity> {
-    console.log('INPUT: ', securityInputDTO);
     const security: SecurityEntity = securityInputDTO;
     return this.securityRepository.save(security);
   }

@@ -33,6 +33,14 @@ type AuditorSchema {
   birth_date: DateTime
 }
 
+type ManagerSchema {
+  id: ID
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
+}
+
 type Query {
   contractor(uuid: String!): ContractorSchema!
   contractors: [ContractorSchema!]!
@@ -40,6 +48,8 @@ type Query {
   securities: [SecuritySchema!]!
   auditor(id: Float!): AuditorSchema!
   allAuditors: [AuditorSchema!]!
+  manager(id: Float!): ManagerSchema!
+  allManagers: [ManagerSchema!]!
 }
 
 type Mutation {
@@ -49,6 +59,8 @@ type Mutation {
   updateSecurity(input: UpdateSecurityInput!, id: Float!): SecuritySchema!
   createAuditor(name: String!, surname: String!, cuit: String!, birth_date: DateTime): AuditorSchema!
   updateAuditor(input: UpdateAuditorInput!, id: Float!): AuditorSchema!
+  createManager(name: String!, surname: String!, cuit: String!, birth_date: DateTime): ManagerSchema!
+  updateManager(input: UpdateManagerInput!, id: Float!): ManagerSchema!
 }
 
 input UpdateContractorInput {
@@ -68,6 +80,13 @@ input UpdateSecurityInput {
 }
 
 input UpdateAuditorInput {
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
+}
+
+input UpdateManagerInput {
   name: String
   surname: String
   cuit: String

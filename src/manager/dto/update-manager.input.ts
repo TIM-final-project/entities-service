@@ -1,8 +1,8 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql';
-import { CreateSecurityInput } from './create-security.input';
+import { CreateManagerInput } from './create-manager.input';
 
 @InputType()
-export class UpdateSecurityInput extends PartialType(CreateSecurityInput) {
+export class UpdateManagerInput extends PartialType(CreateManagerInput) {
   @Field({ nullable: true })
   name?: string;
 

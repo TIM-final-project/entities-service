@@ -7,6 +7,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmConfigService } from './config';
 import { SecurityModule } from './security/security.module';
 import { AuditorModule } from './auditor/auditor.module';
+import { ManagerModule } from './manager/manager.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuditorModule } from './auditor/auditor.module';
     ContractorsModule,
     SecurityModule,
     AuditorModule,
+    ManagerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

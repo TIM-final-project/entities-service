@@ -25,11 +25,21 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type AuditorSchema {
+  id: ID
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
+}
+
 type Query {
   contractor(uuid: String!): ContractorSchema!
   contractors: [ContractorSchema!]!
   security(id: Float!): SecuritySchema!
   securities: [SecuritySchema!]!
+  auditor(id: Float!): AuditorSchema!
+  allAuditors: [AuditorSchema!]!
 }
 
 type Mutation {
@@ -37,6 +47,8 @@ type Mutation {
   updateContractor(input: UpdateContractorInput!, uuid: String!): ContractorSchema!
   createSecurity(name: String!, surname: String!, cuit: String!, birth_date: DateTime): SecuritySchema!
   updateSecurity(input: UpdateSecurityInput!, id: Float!): SecuritySchema!
+  createAuditor(name: String!, surname: String!, cuit: String!, birth_date: DateTime): AuditorSchema!
+  updateAuditor(input: UpdateAuditorInput!, id: Float!): AuditorSchema!
 }
 
 input UpdateContractorInput {
@@ -49,6 +61,13 @@ input UpdateContractorInput {
 }
 
 input UpdateSecurityInput {
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
+}
+
+input UpdateAuditorInput {
   name: String
   surname: String
   cuit: String

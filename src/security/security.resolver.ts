@@ -18,10 +18,7 @@ export class SecurityResolver {
 
   @Query((returns) => [SecuritySchema])
   async securities(): Promise<SecuritySchema[]> {
-    const response = await this.securityService.findAll();
-    console.log('RESPONSE SECURITIES: ', response);
-    return response;
-    // return await this.securityService.findAll();
+    return await this.securityService.findAll();
   }
 
   @Mutation((returns) => SecuritySchema)

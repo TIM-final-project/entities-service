@@ -1,9 +1,11 @@
+import { DriverEntity } from 'src/driver/driver.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -40,4 +42,9 @@ export class ContractorEntity {
     nullable: true,
   })
   province_address?: string;
+
+  @OneToMany((type) => DriverEntity, (driver) => driver.contractor, {
+    nullable: true,
+  })
+  drivers?: DriverEntity[];
 }

@@ -1,4 +1,5 @@
 import { Field, ArgsType } from '@nestjs/graphql';
+import { CreateDriverInput } from 'src/driver/dto/create-driver.input';
 
 @ArgsType()
 export class CreateContractorInput {

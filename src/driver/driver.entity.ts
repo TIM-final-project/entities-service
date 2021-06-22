@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { ContractorEntity } from 'src/contractors/contractor.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
 @Entity()
 export class DriverEntity{
@@ -16,4 +17,7 @@ export class DriverEntity{
 
   @Column({ nullable: true })
   birth_date?: Date;
+
+  @ManyToOne((type) => ContractorEntity, contractor => contractor.drivers)
+  contractor: ContractorEntity;
 }

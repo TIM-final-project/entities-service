@@ -9,7 +9,6 @@ import { SecurityModule } from './security/security.module';
 import { AuditorModule } from './auditor/auditor.module';
 import { ManagerModule } from './manager/manager.module';
 import { DriverModule } from './driver/driver.module';
-import { DriverModule } from './driver/driver.module';
 
 @Module({
   imports: [

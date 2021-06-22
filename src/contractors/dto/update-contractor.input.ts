@@ -1,4 +1,5 @@
 import { PartialType, InputType, Field } from '@nestjs/graphql';
+import { UpdateDriverInput } from 'src/driver/dto/update-driver.input';
 import { CreateContractorInput } from './create-contractor.input';
 
 @InputType()

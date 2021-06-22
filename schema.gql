@@ -2,17 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ContractorSchema {
-  uuid: String
-  name: String!
-  cuit: String
-  street_address: String
-  number_address: Float
-  city_address: String
-  province_address: String
-}
-
-type SecuritySchema {
+type DriverSchema {
   id: ID
   name: String
   surname: String
@@ -24,6 +14,25 @@ type SecuritySchema {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type ContractorSchema {
+  uuid: String
+  name: String!
+  cuit: String
+  street_address: String
+  number_address: Float
+  city_address: String
+  province_address: String
+  drivers: [DriverSchema!]
+}
+
+type SecuritySchema {
+  id: ID
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
+}
 
 type AuditorSchema {
   id: ID
@@ -50,6 +59,8 @@ type Query {
   allAuditors: [AuditorSchema!]!
   manager(id: Float!): ManagerSchema!
   allManagers: [ManagerSchema!]!
+  driver(id: Float!): DriverSchema!
+  allDrivers: [DriverSchema!]!
 }
 
 type Mutation {
@@ -61,6 +72,8 @@ type Mutation {
   updateAuditor(input: UpdateAuditorInput!, id: Float!): AuditorSchema!
   createManager(name: String!, surname: String!, cuit: String!, birth_date: DateTime): ManagerSchema!
   updateManager(input: UpdateManagerInput!, id: Float!): ManagerSchema!
+  createDriver(name: String!, surname: String!, cuit: String!, birth_date: DateTime): DriverSchema!
+  updateDriver(input: UpdateDriverInput!, id: Float!): DriverSchema!
 }
 
 input UpdateContractorInput {
@@ -87,6 +100,13 @@ input UpdateAuditorInput {
 }
 
 input UpdateManagerInput {
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
+}
+
+input UpdateDriverInput {
   name: String
   surname: String
   cuit: String

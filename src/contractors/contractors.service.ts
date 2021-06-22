@@ -16,7 +16,7 @@ export class ContractorsService {
     return this.contractorRepository.find();
   }
 
-  findOne(id: string): Promise<ContractorEntity> {
+  findOne(id: number): Promise<ContractorEntity> {
     return this.contractorRepository.findOne(id);
   }
 
@@ -26,12 +26,12 @@ export class ContractorsService {
   }
 
   async update(
-    uuid: string,
+    id: number,
     contractorInputDTO: UpdateContractorInput,
   ): Promise<ContractorEntity> {
     const { cuit } = contractorInputDTO;
     const contractor: ContractorEntity =
-      await this.contractorRepository.findOne(uuid);
+      await this.contractorRepository.findOne(id);
     this.contractorRepository.merge(contractor, contractorInputDTO);
     return this.contractorRepository.save(contractor);
   }

@@ -10,8 +10,8 @@ import {
 
 @Entity()
 export class ContractorEntity {
-  @PrimaryGeneratedColumn('uuid')
-  uuid?: string;
+  @PrimaryGeneratedColumn()
+  id?: number;
 
   @Column({
     nullable: false,

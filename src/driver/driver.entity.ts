@@ -18,6 +18,9 @@ export class DriverEntity{
   @Column({ nullable: true })
   birth_date?: Date;
 
-  @ManyToOne((type) => ContractorEntity, contractor => contractor.drivers)
-  contractor: ContractorEntity;
+  @ManyToOne(
+    (type) => ContractorEntity, contractor => contractor.drivers,
+    {nullable: true}
+  )
+  contractor?: ContractorEntity;
 }

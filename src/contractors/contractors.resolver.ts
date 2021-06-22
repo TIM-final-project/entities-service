@@ -12,8 +12,8 @@ export class ContractorsResolver {
   ) {}
 
   @Query((returns) => ContractorSchema)
-  async contractor(@Args('uuid') uuid: string): Promise<ContractorSchema> {
-    return await this.contractorService.findOne(uuid);
+  async contractor(@Args('id') id: number): Promise<ContractorSchema> {
+    return await this.contractorService.findOne(id);
   }
 
   @Query((returns) => [ContractorSchema])
@@ -32,11 +32,11 @@ export class ContractorsResolver {
 
   @Mutation((returns) => ContractorSchema)
   async updateContractor(
-    @Args('uuid') uuid: string,
+    @Args('id') id: number,
     @Args('input') input: UpdateContractorInput,
   ): Promise<ContractorSchema> {
     const contractorSchema: ContractorSchema =
-      await this.contractorService.update(uuid, input);
+      await this.contractorService.update(id, input);
     return contractorSchema;
   }
 }

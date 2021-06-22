@@ -4,7 +4,7 @@ import { DriverSchema } from 'src/driver/driver.schema';
 @ObjectType()
 export class ContractorSchema {
   @Field({ nullable: true })
-  uuid?: string;
+  id?: number;
 
   @Field()
   name: string;

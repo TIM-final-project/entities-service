@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { ContractorSchema } from 'src/contractors/contractor.schema';
 
 @ObjectType()
 export class DriverSchema {
@@ -16,4 +17,7 @@ export class DriverSchema {
 
   @Field({ nullable: true })
   birth_date?: Date;
+
+  @Field(() => ContractorSchema, { nullable: true })
+  contractor?: ContractorSchema;
 }

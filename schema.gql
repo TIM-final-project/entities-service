@@ -8,6 +8,7 @@ type DriverSchema {
   surname: String
   cuit: String
   birth_date: DateTime
+  contractor: ContractorSchema!
 }
 
 """
@@ -16,7 +17,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type ContractorSchema {
-  uuid: String
+  id: Float
   name: String!
   cuit: String
   street_address: String

@@ -8,6 +8,7 @@ import { ContractorEntity } from './contractor.entity';
   imports: [
     TypeOrmModule.forFeature([ContractorEntity])
   ],
-  providers: [ContractorsService, ContractorsResolver]
+  providers: [ContractorsService, ContractorsResolver],
+  exports: [ContractorsService]
 })
 export class ContractorsModule {}

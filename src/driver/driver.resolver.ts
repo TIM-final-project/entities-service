@@ -20,8 +20,11 @@ export class DriverResolver {
   }
 
   @Mutation((returns) => DriverSchema)
-  async createDriver(@Args() input: CreateDriverInput): Promise<DriverSchema> {
-    const driverSchema: DriverSchema = await this.driverService.create(input);
+  async createDriver(
+    @Args('contractorId') contractorId: number,
+    @Args('input') input: CreateDriverInput
+  ): Promise<DriverSchema> {
+    const driverSchema: DriverSchema = await this.driverService.create(contractorId, input);
     return driverSchema;
   }
 

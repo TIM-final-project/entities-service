@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ContractorEntity } from 'src/contractors/contractor.entity';
+import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
 import { DriverEntity } from './driver.entity';
 import { CreateDriverInput } from './dto/create-driver.input';
@@ -10,6 +12,8 @@ export class DriverService {
   constructor(
     @InjectRepository(DriverEntity)
     private driverRepository: Repository<DriverEntity>,
+    @Inject()
+    private contractorsService: ContractorsService,
   ) {}
 
   findAll(): Promise<DriverEntity[]> {
@@ -20,8 +24,11 @@ export class DriverService {
     return this.driverRepository.findOne(id);
   }
 
-  create(driverInputDto: CreateDriverInput): Promise<DriverEntity> {
-    return this.driverRepository.save(driverInputDto as DriverEntity);
+  async create(contractorId: number, driverInputDto: CreateDriverInput): Promise<DriverEntity> {
+    const contractor: ContractorEntity = await this.contractorsService.findOne(contractorId);
+    const driver: DriverEntity = driverInputDto;
+    driver.contractor = contractor;
+    return this.driverRepository.save(driver);
   }
 
   async update(

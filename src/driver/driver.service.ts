@@ -12,7 +12,7 @@ export class DriverService {
   constructor(
     @InjectRepository(DriverEntity)
     private driverRepository: Repository<DriverEntity>,
-    @Inject()
+    @Inject(ContractorsService)
     private contractorsService: ContractorsService,
   ) {}
 

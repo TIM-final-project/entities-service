@@ -8,7 +8,7 @@ type DriverSchema {
   surname: String
   cuit: String
   birth_date: DateTime
-  contractor: ContractorSchema!
+  contractor: ContractorSchema
 }
 
 """
@@ -52,29 +52,29 @@ type ManagerSchema {
 }
 
 type Query {
-  contractor(uuid: String!): ContractorSchema!
+  contractor(id: Float!): ContractorSchema!
   contractors: [ContractorSchema!]!
+  driver(id: Float!): DriverSchema!
+  allDrivers: [DriverSchema!]!
   security(id: Float!): SecuritySchema!
   securities: [SecuritySchema!]!
   auditor(id: Float!): AuditorSchema!
   allAuditors: [AuditorSchema!]!
   manager(id: Float!): ManagerSchema!
   allManagers: [ManagerSchema!]!
-  driver(id: Float!): DriverSchema!
-  allDrivers: [DriverSchema!]!
 }
 
 type Mutation {
   createContractor(name: String!, cuit: String!, street_address: String, number_address: Float, city_address: String, province_address: String): ContractorSchema!
-  updateContractor(input: UpdateContractorInput!, uuid: String!): ContractorSchema!
+  updateContractor(input: UpdateContractorInput!, id: Float!): ContractorSchema!
+  createDriver(input: CreateDriverInput!, contractorId: Float!): DriverSchema!
+  updateDriver(input: UpdateDriverInput!, id: Float!): DriverSchema!
   createSecurity(name: String!, surname: String!, cuit: String!, birth_date: DateTime): SecuritySchema!
   updateSecurity(input: UpdateSecurityInput!, id: Float!): SecuritySchema!
   createAuditor(name: String!, surname: String!, cuit: String!, birth_date: DateTime): AuditorSchema!
   updateAuditor(input: UpdateAuditorInput!, id: Float!): AuditorSchema!
   createManager(name: String!, surname: String!, cuit: String!, birth_date: DateTime): ManagerSchema!
   updateManager(input: UpdateManagerInput!, id: Float!): ManagerSchema!
-  createDriver(name: String!, surname: String!, cuit: String!, birth_date: DateTime): DriverSchema!
-  updateDriver(input: UpdateDriverInput!, id: Float!): DriverSchema!
 }
 
 input UpdateContractorInput {
@@ -84,6 +84,20 @@ input UpdateContractorInput {
   number_address: Float
   city_address: String
   province_address: String
+}
+
+input CreateDriverInput {
+  name: String!
+  surname: String!
+  cuit: String!
+  birth_date: DateTime
+}
+
+input UpdateDriverInput {
+  name: String
+  surname: String
+  cuit: String
+  birth_date: DateTime
 }
 
 input UpdateSecurityInput {
@@ -101,13 +115,6 @@ input UpdateAuditorInput {
 }
 
 input UpdateManagerInput {
-  name: String
-  surname: String
-  cuit: String
-  birth_date: DateTime
-}
-
-input UpdateDriverInput {
   name: String
   surname: String
   cuit: String

@@ -2,7 +2,7 @@ import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
 @Entity()
-export class DriverEntity{
+export class DriverEntity {
   @PrimaryGeneratedColumn()
   id?: number;
 
@@ -18,9 +18,8 @@ export class DriverEntity{
   @Column({ nullable: true })
   birth_date?: Date;
 
-  @ManyToOne(
-    (type) => ContractorEntity, contractor => contractor.drivers,
-    {nullable: true}
-  )
+  @ManyToOne((type) => ContractorEntity, (contractor) => contractor.drivers, {
+    nullable: true,
+  })
   contractor?: ContractorEntity;
 }

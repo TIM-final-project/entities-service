@@ -17,11 +17,11 @@ export class DriverService {
   ) {}
 
   findAll(): Promise<DriverEntity[]> {
-    return this.driverRepository.find();
+    return this.driverRepository.find({ relations: ["contractor"] });
   }
 
   findOne(id: number): Promise<DriverEntity> {
-    return this.driverRepository.findOne(id);
+    return this.driverRepository.findOne(id, { relations: ["contractor"] });
   }
 
   async create(contractorId: number, driverInputDto: CreateDriverInput): Promise<DriverEntity> {

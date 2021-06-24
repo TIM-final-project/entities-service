@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ContractorsModule } from './contractors/contractors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -28,7 +26,5 @@ import { VehicleModule } from './vehicle/vehicle.module';
     DriverModule,
     VehicleModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

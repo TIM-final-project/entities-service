@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { DriverSchema } from 'src/driver/driver.schema';
+import { VehicleSchema } from 'src/vehicle/vehicle.schema';
 
 @ObjectType()
 export class ContractorSchema {
@@ -26,4 +27,7 @@ export class ContractorSchema {
 
   @Field(() => [DriverSchema], { nullable: true })
   drivers?: DriverSchema[];
+
+  @Field(() => [VehicleSchema], { nullable: true })
+  vehicles?: VehicleSchema[];
 }

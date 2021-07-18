@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query, ResolveReference } from '@nestjs/graphql';
 import { ContractorSchema } from './contractor.schema';
 import { ContractorsService } from './contractors.service';
 import { CreateContractorInput } from './dto/create-contractor.input';
@@ -39,4 +39,11 @@ export class ContractorsResolver {
       await this.contractorService.update(id, input);
     return contractorSchema;
   }
+
+  @ResolveReference()
+  resolveReference(reference: { __typename: string; id: number }): Promise<ContractorSchema> {
+    console.log("id: " + reference.id)
+    return  this.contractorService.findOne(reference.id);
+  }
+
 }

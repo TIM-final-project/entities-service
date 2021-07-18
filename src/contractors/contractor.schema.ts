@@ -1,9 +1,10 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, ID, Directive} from '@nestjs/graphql';
 import { DriverSchema } from 'src/driver/driver.schema';
 
 @ObjectType()
+@Directive('@key(fields: "id")')
 export class ContractorSchema {
-  @Field({ nullable: true })
+  @Field((type) => ID, { nullable: true })
   id?: number;
 
   @Field()

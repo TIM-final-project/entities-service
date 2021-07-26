@@ -41,9 +41,8 @@ export class ContractorsResolver {
   }
 
   @ResolveReference()
-  resolveReference(reference: { __typename: string; id: number }): Promise<ContractorSchema> {
-    console.log("id: " + reference.id)
-    return  this.contractorService.findOne(reference.id);
+  async resolveReference(reference: { __typename: string; id: number }): Promise<ContractorSchema> {
+    return await this.contractorService.findOne(reference.id);
   }
 
 }

@@ -42,7 +42,9 @@ export class ContractorsResolver {
 
   @ResolveReference()
   async resolveReference(reference: { __typename: string; id: number }): Promise<ContractorSchema> {
-    return await this.contractorService.findOne(reference.id);
+    if(reference.__typename == "ContractorSchema"){
+      return await this.contractorService.findOne(reference.id);
+    }
   }
 
 }

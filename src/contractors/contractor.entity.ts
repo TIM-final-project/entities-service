@@ -1,4 +1,5 @@
 import { DriverEntity } from 'src/driver/driver.entity';
+import { VehicleEntity } from 'src/vehicle/vehicle.entity';
 import {
   Entity,
   Column,
@@ -47,4 +48,9 @@ export class ContractorEntity {
     nullable: true,
   })
   drivers?: DriverEntity[];
+
+  @OneToMany((type) => VehicleEntity, (vehicle) => vehicle.contractor, {
+    nullable: true,
+  })
+  vehicles?: VehicleEntity[];
 }

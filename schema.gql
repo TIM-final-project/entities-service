@@ -26,6 +26,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type VehicleSchema {
+  id: ID
+  plate: String!
+  model: String!
+  brand: String!
+  year: Float!
+  contractor: ContractorSchema
+}
+
 type ContractorSchema {
   id: ID
   name: String!
@@ -35,6 +44,7 @@ type ContractorSchema {
   city_address: String
   province_address: String
   drivers: [DriverSchema!]
+  vehicles: [VehicleSchema!]
 }
 
 type SecuritySchema {
@@ -66,6 +76,8 @@ type Query {
   contractors: [ContractorSchema!]!
   driver(id: Float!): DriverSchema!
   allDrivers: [DriverSchema!]!
+  vehicle(id: Float!): VehicleSchema!
+  allVehicles: [VehicleSchema!]!
   security(id: Float!): SecuritySchema!
   securities: [SecuritySchema!]!
   auditor(id: Float!): AuditorSchema!
@@ -79,6 +91,8 @@ type Mutation {
   updateContractor(input: UpdateContractorInput!, id: Float!): ContractorSchema!
   createDriver(input: CreateDriverInput!, contractorId: Float!): DriverSchema!
   updateDriver(input: UpdateDriverInput!, id: Float!): DriverSchema!
+  createVehicle(input: CreateVehicleInput!, contractorId: Float!): VehicleSchema!
+  updateVehicle(input: UpdateVehicleInput!, id: Float!): VehicleSchema!
   createSecurity(name: String!, surname: String!, cuit: String!, birth_date: DateTime): SecuritySchema!
   updateSecurity(input: UpdateSecurityInput!, id: Float!): SecuritySchema!
   createAuditor(name: String!, surname: String!, cuit: String!, birth_date: DateTime): AuditorSchema!
@@ -108,6 +122,20 @@ input UpdateDriverInput {
   surname: String
   cuit: String
   birth_date: DateTime
+}
+
+input CreateVehicleInput {
+  plate: String!
+  brand: String!
+  model: String!
+  year: Float!
+}
+
+input UpdateVehicleInput {
+  plate: String!
+  brand: String!
+  model: String!
+  year: Float!
 }
 
 input UpdateSecurityInput {

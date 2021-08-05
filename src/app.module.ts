@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ContractorsModule } from './contractors/contractors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLFederationModule } from '@nestjs/graphql';
@@ -9,6 +7,7 @@ import { SecurityModule } from './security/security.module';
 import { AuditorModule } from './auditor/auditor.module';
 import { ManagerModule } from './manager/manager.module';
 import { DriverModule } from './driver/driver.module';
+import { VehicleModule } from './vehicle/vehicle.module';
 
 @Module({
   imports: [
@@ -25,8 +24,7 @@ import { DriverModule } from './driver/driver.module';
     AuditorModule,
     ManagerModule,
     DriverModule,
+    VehicleModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

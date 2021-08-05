@@ -13,11 +13,11 @@ export class ContractorsService {
   ) {}
 
   findAll(): Promise<ContractorEntity[]> {
-    return this.contractorRepository.find({ relations: ["drivers"] });
+    return this.contractorRepository.find({ relations: ["drivers", "vehicles"] });
   }
 
   findOne(id: number): Promise<ContractorEntity> {
-    return this.contractorRepository.findOne(id, { relations: ["drivers"] });
+    return this.contractorRepository.findOne(id, { relations: ["drivers", "vehicles"] });
   }
 
   create(contractorInputDTO: CreateContractorInput): Promise<ContractorEntity> {

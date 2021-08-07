@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
+import { Args, Resolver, Query, Mutation, ResolveReference } from '@nestjs/graphql';
 import { AuditorSchema } from './auditor.schema';
 import { AuditorService } from './auditor.service';
 import { CreateAuditorInput } from './dto/create-auditor.input';
@@ -35,5 +35,10 @@ export class AuditorResolver {
     @Args('input') input: UpdateAuditorInput,
   ): Promise<AuditorSchema> {
     return await this.auditorService.update(id, input);
+  }
+  
+  @ResolveReference()
+  async resolveReference(reference: { __typename: string; id: number }): Promise<AuditorSchema> {
+    return await this.auditorService.findOne(reference.id);
   }
 }

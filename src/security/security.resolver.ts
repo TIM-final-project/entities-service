@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, ResolveReference } from '@nestjs/graphql';
 import { CreateSecurityInput } from './dto/create-security.input';
 import { UpdateSecurityInput } from './dto/update-security.input';
 import { SecuritySchema } from './security.schema';
@@ -37,5 +37,10 @@ export class SecurityResolver {
     @Args('input') input: UpdateSecurityInput,
   ): Promise<SecuritySchema> {
     return await this.securityService.update(id, input);
+  }
+
+  @ResolveReference()
+  async resolveReference(reference: { __typename: string; id: number }): Promise<SecuritySchema> {
+    return await this.securityService.findOne(reference.id);
   }
 }

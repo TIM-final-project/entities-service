@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, ResolveReference } from '@nestjs/graphql';
 import { CreateManagerInput } from './dto/create-manager.input';
 import { UpdateManagerInput } from './dto/update-manager.input';
 import { ManagerSchema } from './manager.schema';
@@ -35,5 +35,10 @@ export class ManagerResolver {
     @Args('input') input: UpdateManagerInput,
   ): Promise<ManagerSchema> {
     return await this.managerService.update(id, input);
+  }
+
+  @ResolveReference()
+  async resolveReference(reference: { __typename: string; id: number }): Promise<ManagerSchema> {
+    return await this.managerService.findOne(reference.id);
   }
 }

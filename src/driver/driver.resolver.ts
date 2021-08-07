@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
+import { Args, Resolver, Query, Mutation, ResolveReference } from '@nestjs/graphql';
 import { DriverSchema } from './driver.schema';
 import { DriverService } from './driver.service';
 import { CreateDriverInput } from './dto/create-driver.input';
@@ -34,5 +34,10 @@ export class DriverResolver {
     @Args('input') input: UpdateDriverInput,
   ): Promise<DriverSchema> {
     return await this.driverService.update(id, input);
+  }
+
+  @ResolveReference()
+  async resolveReference(reference: { __typename: string; id: number }): Promise<DriverSchema> {
+    return await this.driverService.findOne(reference.id);
   }
 }

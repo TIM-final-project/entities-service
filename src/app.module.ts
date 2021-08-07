@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ContractorsModule } from './contractors/contractors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLFederationModule } from '@nestjs/graphql';
 import { TypeOrmConfigService } from './config';
 import { SecurityModule } from './security/security.module';
 import { AuditorModule } from './auditor/auditor.module';
@@ -16,7 +16,7 @@ import { VehicleModule } from './vehicle/vehicle.module';
       inject: [],
       useClass: TypeOrmConfigService
     }),
-    GraphQLModule.forRoot({
+    GraphQLFederationModule.forRoot({
       autoSchemaFile: 'schema.gql'
     }),
     ContractorsModule,

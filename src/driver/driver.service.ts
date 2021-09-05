@@ -4,8 +4,8 @@ import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
 import { DriverEntity } from './driver.entity';
-import { CreateDriverInput } from './dto/create-driver.input';
-import { UpdateDriverInput } from './dto/update-driver.input';
+import { CreateDriverInput } from './dto/create-driver.dto';
+import { UpdateDriverInput } from './dto/update-driver.dto';
 
 @Injectable()
 export class DriverService {

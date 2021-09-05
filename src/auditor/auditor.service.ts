@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuditorEntity } from './auditor.entity';
-import { CreateAuditorInput } from './dto/create-auditor.input';
-import { UpdateAuditorInput } from './dto/update-auditor.input';
+import { CreateAuditorInput } from './dto/create-auditor.dto';
+import { UpdateAuditorInput } from './dto/update-auditor.dto';
 
 @Injectable()
 export class AuditorService {

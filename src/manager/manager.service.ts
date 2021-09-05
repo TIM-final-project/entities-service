@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateManagerInput } from './dto/create-manager.input';
-import { UpdateManagerInput } from './dto/update-manager.input';
+import { CreateManagerInput } from './dto/create-manager.dto';
+import { UpdateManagerInput } from './dto/update-manager.dto';
 import { ManagerEntity } from './manager.entity';
 
 @Injectable()

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContractorEntity } from './contractor.entity';
-import { CreateContractorInput } from './dto/create-contractor.input';
-import { UpdateContractorInput } from './dto/update-contractor.input';
+import { CreateContractorInput } from './dto/create-contractor.dto';
+import { UpdateContractorInput } from './dto/update-contractor.dto';
 
 @Injectable()
 export class ContractorsService {

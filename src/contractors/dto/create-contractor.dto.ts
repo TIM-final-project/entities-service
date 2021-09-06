@@ -1,4 +1,4 @@
-export class CreateContractorInput {
+export class CreateContractorDto {
   name: string;
   cuit: string;
   street_address?: string;

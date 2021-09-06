@@ -1,4 +1,4 @@
-export class UpdateContractorInput {
+export class UpdateContractorDto {
   name?: string;
   cuit: string;
   street_address?: string;

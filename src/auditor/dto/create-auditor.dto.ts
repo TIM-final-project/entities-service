@@ -1,4 +1,4 @@
-export class CreateAuditorInput {
+export class CreateAuditorDto {
   name: string;
   surname: string;
   cuit: string;

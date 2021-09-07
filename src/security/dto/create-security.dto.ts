@@ -1,4 +1,4 @@
-export class CreateSecurityInput {
+export class CreateSecurityDto {
   name: string;
   surname: string;
   cuit: string;

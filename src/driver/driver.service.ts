@@ -4,8 +4,8 @@ import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
 import { DriverEntity } from './driver.entity';
-import { CreateDriverInput } from './dto/create-driver.dto';
-import { UpdateDriverInput } from './dto/update-driver.dto';
+import { CreateDriverDto } from './dto/create-driver.dto';
+import { UpdateDriverDto } from './dto/update-driver.dto';
 
 @Injectable()
 export class DriverService {
@@ -24,19 +24,19 @@ export class DriverService {
     return this.driverRepository.findOne(id, { relations: ["contractor"] });
   }
 
-  async create(contractorId: number, driverInputDto: CreateDriverInput): Promise<DriverEntity> {
+  async create(contractorId: number, driverDto: CreateDriverDto): Promise<DriverEntity> {
     const contractor: ContractorEntity = await this.contractorsService.findOne(contractorId);
-    const driver: DriverEntity = driverInputDto;
+    const driver: DriverEntity = driverDto;
     driver.contractor = contractor;
     return this.driverRepository.save(driver);
   }
 
   async update(
     id: number,
-    driverInputDto: UpdateDriverInput,
+    driverDto: UpdateDriverDto,
   ): Promise<DriverEntity> {
     const driver: DriverEntity = await this.driverRepository.findOne(id);
-    this.driverRepository.merge(driver, driverInputDto);
+    this.driverRepository.merge(driver, driverDto);
     return this.driverRepository.save(driver);
   }
 }

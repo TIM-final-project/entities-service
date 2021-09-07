@@ -1,4 +1,4 @@
-export class CreateManagerInput {
+export class CreateManagerDto {
   name: string;
   surname: string;
   cuit: string;

@@ -1,4 +1,4 @@
-export class UpdateVehicleInput {
+export class UpdateVehicleDto {
   plate: string;
   brand: string;
   model: string;

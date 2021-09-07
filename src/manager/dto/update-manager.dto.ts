@@ -1,4 +1,4 @@
-export class UpdateManagerInput {
+export class UpdateManagerDto {
   name?: string;
   surname?: string;
   cuit?: string;

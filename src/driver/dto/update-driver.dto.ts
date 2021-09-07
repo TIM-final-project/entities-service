@@ -1,4 +1,4 @@
-export class UpdateDriverInput {
+export class UpdateDriverDto {
   name?: string;
   surname?: string;
   cuit?: string;

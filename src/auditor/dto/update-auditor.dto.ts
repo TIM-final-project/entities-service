@@ -1,4 +1,4 @@
-export class UpdateAuditorInput {
+export class UpdateAuditorDto {
   name?: string;
   surname?: string;
   cuit?: string;

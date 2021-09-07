@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
-import { CreateVehicleInput } from './dto/create-vehicle.dto';
-import { UpdateVehicleInput } from './dto/update-vehicle.dto';
+import { CreateVehicleDto } from './dto/create-vehicle.dto';
+import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleEntity } from './vehicle.entity';
 
 @Injectable()
@@ -26,22 +26,22 @@ export class VehicleService {
 
   async create(
     contractorId: number,
-    vehicleInputDto: CreateVehicleInput,
+    vehicleDto: CreateVehicleDto,
   ): Promise<VehicleEntity> {
     const contractor: ContractorEntity = await this.contractorsService.findOne(
       contractorId,
     );
-    const vehicle: VehicleEntity = vehicleInputDto;
+    const vehicle: VehicleEntity = vehicleDto;
     vehicle.contractor = contractor;
     return this.vehicleRepository.save(vehicle);
   }
 
   async update(
     id: number,
-    vehicleInputDto: UpdateVehicleInput,
+    vehicleDto: UpdateVehicleDto,
   ): Promise<VehicleEntity> {
     const vehicle: VehicleEntity = await this.vehicleRepository.findOne(id);
-    this.vehicleRepository.merge(vehicle, vehicleInputDto);
+    this.vehicleRepository.merge(vehicle, vehicleDto);
     return this.vehicleRepository.save(vehicle);
   }
 }

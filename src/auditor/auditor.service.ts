@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuditorEntity } from './auditor.entity';
-import { CreateAuditorInput } from './dto/create-auditor.dto';
-import { UpdateAuditorInput } from './dto/update-auditor.dto';
+import { CreateAuditorDto } from './dto/create-auditor.dto';
+import { UpdateAuditorDto } from './dto/update-auditor.dto';
 
 @Injectable()
 export class AuditorService {
@@ -20,16 +20,16 @@ export class AuditorService {
     return this.auditorRepository.findOne(id);
   }
 
-  create(auditorInputDTO: CreateAuditorInput): Promise<AuditorEntity> {
-    return this.auditorRepository.save(auditorInputDTO as AuditorEntity);
+  create(auditorDto: CreateAuditorDto): Promise<AuditorEntity> {
+    return this.auditorRepository.save(auditorDto as AuditorEntity);
   }
 
   async update(
     id: number,
-    auditorInputDTO: UpdateAuditorInput,
+    auditorDto: UpdateAuditorDto,
   ): Promise<AuditorEntity> {
     const auditor: AuditorEntity = await this.auditorRepository.findOne(id);
-    this.auditorRepository.merge(auditor, auditorInputDTO);
+    this.auditorRepository.merge(auditor, auditorDto);
     return this.auditorRepository.save(auditor);
   }
 }

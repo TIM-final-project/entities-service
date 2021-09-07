@@ -15,5 +15,5 @@ export class AuditorEntity {
   cuit: string;
 
   @Column({ nullable: true })
-  birth_date?: Date;
+  birth_date: Date;
 }

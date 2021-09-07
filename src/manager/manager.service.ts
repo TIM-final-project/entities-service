@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateManagerInput } from './dto/create-manager.input';
-import { UpdateManagerInput } from './dto/update-manager.input';
+import { CreateManagerDto } from './dto/create-manager.dto';
+import { UpdateManagerDto } from './dto/update-manager.dto';
 import { ManagerEntity } from './manager.entity';
 
 @Injectable()
@@ -20,17 +20,17 @@ export class ManagerService {
     return this.managerRepository.findOne(id);
   }
 
-  create(managerInputDTO: CreateManagerInput): Promise<ManagerEntity> {
-    const manager: ManagerEntity = managerInputDTO;
+  create(managerDto: CreateManagerDto): Promise<ManagerEntity> {
+    const manager: ManagerEntity = managerDto;
     return this.managerRepository.save(manager);
   }
 
   async update(
     id: number,
-    managerInputDTO: UpdateManagerInput,
+    managerDto: UpdateManagerDto,
   ): Promise<ManagerEntity> {
     const manager: ManagerEntity = await this.managerRepository.findOne(id);
-    this.managerRepository.merge(manager, managerInputDTO);
+    this.managerRepository.merge(manager, managerDto);
     return this.managerRepository.save(manager);
   }
 }

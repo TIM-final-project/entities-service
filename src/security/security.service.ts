@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateSecurityInput } from './dto/create-security.input';
-import { UpdateSecurityInput } from './dto/update-security.input';
+import { CreateSecurityDto } from './dto/create-security.dto';
+import { UpdateSecurityDto } from './dto/update-security.dto';
 import { SecurityEntity } from './security.entity';
 
 @Injectable()
@@ -20,17 +20,17 @@ export class SecurityService {
     return this.securityRepository.findOne(id);
   }
 
-  create(securityInputDTO: CreateSecurityInput): Promise<SecurityEntity> {
-    const security: SecurityEntity = securityInputDTO;
+  create(securityDto: CreateSecurityDto): Promise<SecurityEntity> {
+    const security: SecurityEntity = securityDto;
     return this.securityRepository.save(security);
   }
 
   async update(
     id: number,
-    securityInputDTO: UpdateSecurityInput,
+    securityDto: UpdateSecurityDto,
   ): Promise<SecurityEntity> {
     const security: SecurityEntity = await this.securityRepository.findOne(id);
-    this.securityRepository.merge(security, securityInputDTO);
+    this.securityRepository.merge(security, securityDto);
     return this.securityRepository.save(security);
   }
 }

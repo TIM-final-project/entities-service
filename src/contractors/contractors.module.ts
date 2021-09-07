@@ -1,10 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { ContractorsService } from './contractors.service';
-import { ContractorsResolver } from './contractors.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContractorEntity } from './contractor.entity';
 import { DriverModule } from 'src/driver/driver.module';
 import { VehicleModule } from 'src/vehicle/vehicle.module';
+import { ContractorsController } from './contractors.controller';
 
 @Module({
   imports: [
@@ -12,7 +12,8 @@ import { VehicleModule } from 'src/vehicle/vehicle.module';
     forwardRef(() => DriverModule),
     forwardRef(() => VehicleModule)
   ],
-  providers: [ContractorsService, ContractorsResolver],
-  exports: [ContractorsService]
+  providers: [ContractorsService],
+  exports: [ContractorsService],
+  controllers: [ContractorsController]
 })
 export class ContractorsModule {}

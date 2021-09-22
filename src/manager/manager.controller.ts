@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { CreateManagerDto } from './dto/create-manager.dto';
 import { ManagerDto } from './dto/manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
@@ -8,22 +9,26 @@ import { ManagerService } from './manager.service';
 export class ManagerController {
   constructor(private managerService: ManagerService) {}
 
-  @Get()
+  // @Get()
+  @MessagePattern('managers_find_all')
   async findAll(): Promise<ManagerDto[]> {
     return this.managerService.findAll();
   }
 
-  @Get(':id')
+  // @Get(':id')
+  @MessagePattern('managers_find_by_id')
   async findOne(@Param('id') id: number): Promise<ManagerDto> {
     return this.managerService.findOne(id);
   }
 
-  @Post()
+  // @Post()
+  @MessagePattern('managers_create')
   async create(@Body() manager: CreateManagerDto): Promise<ManagerDto> {
     return this.managerService.create(manager);
   }
 
-  @Put(':id')
+  // @Put(':id')
+  @MessagePattern('managers_update')
   async update(@Param('id') id: number, @Body() manager: UpdateManagerDto): Promise<ManagerDto> {
     return this.managerService.update(id, manager);
   }

@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleDto } from './dto/vehicle.dto';
@@ -8,24 +9,28 @@ import { VehicleService } from './vehicle.service';
 export class VehicleController {
   constructor(private vehicleService: VehicleService) {}
 
-  @Get()
+  // @Get()
+  @MessagePattern('vehicles_find_all')
   async findAll(): Promise<VehicleDto[]> {
     return this.vehicleService.findAll();
   }
 
-  @Get(':id')
+  // @Get(':id')
+  @MessagePattern('vehicles_find_by_id')
   async findOne(@Param('id') id: number): Promise<VehicleDto> {
     return this.vehicleService.findOne(id);
   }
 
-  @Post()
+  // @Post()
+  @MessagePattern('vehicles_create')
   async create(@Body() vehicle: CreateVehicleDto): Promise<VehicleDto> {
     const { contractorId } = vehicle;
     delete vehicle.contractorId;
     return this.vehicleService.create(contractorId, vehicle);
   }
 
-  @Put(':id')
+  // @Put(':id')
+  @MessagePattern('vehicles_update')
   async update(@Param('id') id: number, @Body() vehicle: UpdateVehicleDto): Promise<VehicleDto> {
     return this.vehicleService.update(id, vehicle);
   }

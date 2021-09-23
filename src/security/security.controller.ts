@@ -17,7 +17,7 @@ export class SecurityController {
 
   // @Get(':id')
   @MessagePattern('securities_find_by_id')
-  async findOne(@Param('id') id: number): Promise<SecurityDto> {
+  async findOne(@Body('id') id: number): Promise<SecurityDto> {
     return await this.securityService.findOne(id);
   }
 
@@ -29,7 +29,10 @@ export class SecurityController {
 
   // @Put(':id')
   @MessagePattern('securities_update')
-  async update(@Param('id') id: number, @Body() security: UpdateSecurityDto): Promise<SecurityDto> {
+  async update(@Body() security: UpdateSecurityDto): Promise<SecurityDto> {
+    console.log('Update securiy request ', { security });
+    const { id } = security;
+    delete security.id; 
     return await this.securityService.update(id, security);
   }
 }

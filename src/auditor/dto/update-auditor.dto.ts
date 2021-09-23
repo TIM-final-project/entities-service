@@ -1,4 +1,5 @@
 export class UpdateAuditorDto {
+  id: number;
   name?: string;
   surname?: string;
   cuit?: string;

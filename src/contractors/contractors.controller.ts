@@ -17,7 +17,8 @@ export class ContractorsController {
 
   // @Get(':id')
   @MessagePattern('contractors_find_by_id')
-  async findOne(@Param('id') id: number): Promise<ContractorDto> {
+  async findOne(@Body('id') id: number): Promise<ContractorDto> {
+    console.log('Get Contractor by id ', { id });    
     return this.contractorService.findOne(id);
   }
 
@@ -32,9 +33,11 @@ export class ContractorsController {
   // @Put(':id')
   @MessagePattern('contractors_update')
   async update(
-    @Param('id') id: number,
     @Body() updateContractorDto: UpdateContractorDto,
   ): Promise<ContractorDto> {
+    console.log('Update contractor request ', { ...updateContractorDto });
+    const { id } = updateContractorDto;
+    delete updateContractorDto.id;
     return this.contractorService.update(id, updateContractorDto);
   }
 }

@@ -1,4 +1,5 @@
 export class UpdateDriverDto {
+  id: number;
   name?: string;
   surname?: string;
   cuit?: string;

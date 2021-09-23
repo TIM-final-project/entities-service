@@ -1,4 +1,5 @@
 export class UpdateSecurityDto {
+  id: number;
   name?: string;
   surname?: string;
   cuit?: string;

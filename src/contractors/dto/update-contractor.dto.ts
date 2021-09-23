@@ -1,4 +1,5 @@
 export class UpdateContractorDto {
+  id: number;
   name?: string;
   cuit: string;
   street_address?: string;

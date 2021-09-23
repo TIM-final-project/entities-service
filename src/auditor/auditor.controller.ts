@@ -17,7 +17,7 @@ export class AuditorController {
 
   // @Get(':id')
   @MessagePattern('auditors_find_by_id')
-  async finOne(@Param('id') id: number): Promise<AuditorDto> {
+  async finOne(@Body('id') id: number): Promise<AuditorDto> {
     return await this.auditorService.findOne(id);
   }
 
@@ -29,7 +29,10 @@ export class AuditorController {
 
   // @Put(':id')
   @MessagePattern('auditors_update')
-  async update(@Param('id') id: number, @Body() auditor: UpdateAuditorDto) {
+  async update(@Body() auditor: UpdateAuditorDto) {
+    console.log('Update auditor request ', { ...auditor });
+    const { id } = auditor;
+    delete auditor.id;
     return await this.auditorService.update(id, auditor);
   }
 }

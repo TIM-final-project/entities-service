@@ -17,7 +17,7 @@ export class ManagerController {
 
   // @Get(':id')
   @MessagePattern('managers_find_by_id')
-  async findOne(@Param('id') id: number): Promise<ManagerDto> {
+  async findOne(@Body('id') id: number): Promise<ManagerDto> {
     return this.managerService.findOne(id);
   }
 
@@ -29,7 +29,10 @@ export class ManagerController {
 
   // @Put(':id')
   @MessagePattern('managers_update')
-  async update(@Param('id') id: number, @Body() manager: UpdateManagerDto): Promise<ManagerDto> {
+  async update(@Body() manager: UpdateManagerDto): Promise<ManagerDto> {
+    console.log('Update manager request ', { manager });
+    const { id } = manager;
+    delete manager.id;
     return this.managerService.update(id, manager);
   }
 }

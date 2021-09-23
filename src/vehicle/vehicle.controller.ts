@@ -17,7 +17,7 @@ export class VehicleController {
 
   // @Get(':id')
   @MessagePattern('vehicles_find_by_id')
-  async findOne(@Param('id') id: number): Promise<VehicleDto> {
+  async findOne(@Body('id') id: number): Promise<VehicleDto> {
     return this.vehicleService.findOne(id);
   }
 
@@ -31,7 +31,10 @@ export class VehicleController {
 
   // @Put(':id')
   @MessagePattern('vehicles_update')
-  async update(@Param('id') id: number, @Body() vehicle: UpdateVehicleDto): Promise<VehicleDto> {
+  async update(@Body() vehicle: UpdateVehicleDto): Promise<VehicleDto> {
+    console.log('Update Vehicle ', { vehicle });
+    const { id } = vehicle;
+    delete vehicle.id;
     return this.vehicleService.update(id, vehicle);
   }
 }

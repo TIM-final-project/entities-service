@@ -17,7 +17,7 @@ export class DriverController {
 
   // @Get(':id')
   @MessagePattern('drivers_find_by_id')
-  async findOne(@Param('id') id: number): Promise<DriverDto> {
+  async findOne(@Body('id') id: number): Promise<DriverDto> {
     return this.driverService.findOne(id);
   }
 
@@ -31,7 +31,10 @@ export class DriverController {
 
   // @Put(':id')
   @MessagePattern('drivers_update')
-  async update(@Param('id') id: number, @Body() driver: UpdateDriverDto) {
+  async update(@Body() driver: UpdateDriverDto) {
+    console.log('Update driver request ', { driver });
+    const { id } = driver;
+    delete driver.id;
     return this.driverService.update(id, driver);
   }
 }

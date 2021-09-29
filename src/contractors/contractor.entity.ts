@@ -19,6 +19,7 @@ export class ContractorEntity {
 
   @Column({
     nullable: false,
+    unique:true
   })
   cuit: string;
 

@@ -1,28 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContractorEntity } from './contractor.entity';
+import { ContractorDto } from './dto/contractor.dto';
 import { CreateContractorDto } from './dto/create-contractor.dto';
 import { UpdateContractorDto } from './dto/update-contractor.dto';
 
 @Injectable()
 export class ContractorsService {
+  private readonly logger = new Logger(ContractorsService.name);
+
   constructor(
     @InjectRepository(ContractorEntity)
     private contractorRepository: Repository<ContractorEntity>,
   ) {}
 
   findAll(): Promise<ContractorEntity[]> {
-    return this.contractorRepository.find({ relations: ["drivers", "vehicles"] });
+    return this.contractorRepository.find({
+      relations: ['drivers', 'vehicles'],
+    });
   }
 
   findOne(id: number): Promise<ContractorEntity> {
-    return this.contractorRepository.findOne(id, { relations: ["drivers", "vehicles"] });
+    return this.contractorRepository.findOne(id, {
+      relations: ['drivers', 'vehicles'],
+    });
   }
 
   create(contractorDTO: CreateContractorDto): Promise<ContractorEntity> {
-    const contractor: ContractorEntity = contractorDTO;
-    return this.contractorRepository.save(contractor);
+    this.logger.debug('Creating contractor', { contractorDTO });
+    return this.contractorRepository.save(contractorDTO as ContractorEntity);
   }
 
   async update(

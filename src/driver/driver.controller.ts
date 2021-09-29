@@ -22,7 +22,7 @@ export class DriverController {
   }
 
   // @Post()
-  @MessagePattern('driver_create')
+  @MessagePattern('drivers_create')
   async create(@Body() driverDto: CreateDriverDto): Promise<DriverDto> {
     const { contractorId } = driverDto;
     delete driverDto.contractorId;

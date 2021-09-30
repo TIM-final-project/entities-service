@@ -1,5 +1,9 @@
-import { BadRequestException, Body, Controller, Logger } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import {
+  Body,
+  Controller,
+  Logger,
+} from '@nestjs/common';
+import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { ContractorsService } from './contractors.service';
 import { ContractorDto } from './dto/contractor.dto';
 import { CreateContractorDto } from './dto/create-contractor.dto';
@@ -13,7 +17,7 @@ export class ContractorsController {
 
   // @Get()
   @MessagePattern('contractors_find_all')
-  async findAll(): Promise<ContractorDto[]> {
+  async findAll(): Promise<ContractorDto[] | RpcException> {
     this.logger.log('Getting contractors');
     return this.contractorService.findAll();
   }
@@ -21,21 +25,31 @@ export class ContractorsController {
   // @Get(':id')
   @MessagePattern('contractors_find_by_id')
   async findOne(@Body('id') id: number): Promise<ContractorDto> {
-    console.log('Get Contractor by id ', { id });    
-    return this.contractorService.findOne(id);
+    this.logger.debug('Get Contractor by id ', { id });
+    const response = await this.contractorService.findOne(id);
+    if (response) {
+      return response;
+    } else {
+      this.logger.error(`Error getting contractor ${id}`);
+      throw new RpcException({
+        message: `No existe un contratista con el id: ${id}`,
+      });
+    }
   }
 
   // @Post()
   @MessagePattern('contractors_create')
   async create(
     @Body() createContractorDto: CreateContractorDto,
-  ): Promise<ContractorDto> {
+  ): Promise<ContractorDto | RpcException> {
     this.logger.debug('Creating Contractor', { createContractorDto });
     try {
       return await this.contractorService.create(createContractorDto);
     } catch (error) {
       this.logger.error('Error Creating Contractor', { error });
-      throw new BadRequestException('Error Creating Contractor');
+      throw new RpcException({
+        message: 'Ya existe un contratista con el CUIT ingresado',
+      });
     }
   }
 

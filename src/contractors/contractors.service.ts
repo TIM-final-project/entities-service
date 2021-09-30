@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContractorEntity } from './contractor.entity';
@@ -39,7 +40,14 @@ export class ContractorsService {
     const { cuit } = contractorDTO;
     const contractor: ContractorEntity =
       await this.contractorRepository.findOne(id);
-    this.contractorRepository.merge(contractor, contractorDTO);
-    return this.contractorRepository.save(contractor);
+    if (contractor) {
+      this.contractorRepository.merge(contractor, contractorDTO);
+      return this.contractorRepository.save(contractor);
+    } else {
+      this.logger.error(`Error updating Contractor ${id}`);
+      throw new RpcException({
+        message: `No existe el contratista ${id}`,
+      });
+    }
   }
 }

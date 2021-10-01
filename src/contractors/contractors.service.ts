@@ -22,10 +22,20 @@ export class ContractorsService {
     });
   }
 
-  findOne(id: number): Promise<ContractorEntity> {
-    return this.contractorRepository.findOne(id, {
+  async findOne(id: number): Promise<ContractorEntity> {
+
+    this.logger.debug('Getting contractor', { id });
+    const contractor = await this.contractorRepository.findOne(id, {
       relations: ['drivers', 'vehicles'],
     });
+    if (contractor) {
+      return contractor;
+    } else {
+      this.logger.error('Error Getting contractor', { id });
+      throw new RpcException({
+        message: `No existe un contratista con el id: ${id}`,
+      })
+    }
   }
 
   create(contractorDTO: CreateContractorDto): Promise<ContractorEntity> {
@@ -42,7 +52,14 @@ export class ContractorsService {
       await this.contractorRepository.findOne(id);
     if (contractor) {
       this.contractorRepository.merge(contractor, contractorDTO);
-      return this.contractorRepository.save(contractor);
+      try {
+        return await this.contractorRepository.save(contractor);
+      } catch (error) {
+        this.logger.error('Error updating Contractor', { error });
+        throw new RpcException({
+          message: `Ya existe un contratista con el cuit: ${contractorDTO.cuit}`,
+        })
+      }
     } else {
       this.logger.error(`Error updating Contractor ${id}`);
       throw new RpcException({

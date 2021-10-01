@@ -26,15 +26,7 @@ export class ContractorsController {
   @MessagePattern('contractors_find_by_id')
   async findOne(@Body('id') id: number): Promise<ContractorDto> {
     this.logger.debug('Get Contractor by id ', { id });
-    const response = await this.contractorService.findOne(id);
-    if (response) {
-      return response;
-    } else {
-      this.logger.error(`Error getting contractor ${id}`);
-      throw new RpcException({
-        message: `No existe un contratista con el id: ${id}`,
-      });
-    }
+    return await this.contractorService.findOne(id);
   }
 
   // @Post()

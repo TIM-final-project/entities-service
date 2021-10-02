@@ -40,7 +40,7 @@ export class ContractorsController {
     } catch (error) {
       this.logger.error('Error Creating Contractor', { error });
       throw new RpcException({
-        message: 'Ya existe un contratista con el CUIT ingresado',
+        message: 'Ya existe un contratista con el CUIT ingresado.',
       });
     }
   }

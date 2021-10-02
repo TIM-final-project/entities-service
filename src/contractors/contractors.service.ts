@@ -3,7 +3,6 @@ import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContractorEntity } from './contractor.entity';
-import { ContractorDto } from './dto/contractor.dto';
 import { CreateContractorDto } from './dto/create-contractor.dto';
 import { UpdateContractorDto } from './dto/update-contractor.dto';
 
@@ -57,7 +56,7 @@ export class ContractorsService {
       } catch (error) {
         this.logger.error('Error updating Contractor', { error });
         throw new RpcException({
-          message: `Ya existe un contratista con el cuit: ${contractorDTO.cuit}`,
+          message: `Ya existe un contratista con el cuit: ${cuit}`,
         })
       }
     } else {

@@ -8,6 +8,7 @@ export class VehicleEntity {
 
   @Column({
     nullable: false,
+    unique: true,
   })
   plate: string;
 

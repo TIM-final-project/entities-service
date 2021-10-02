@@ -11,7 +11,7 @@ export class SecurityEntity {
   @Column({ nullable: false })
   surname: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   cuit: string;
 
   @Column({ nullable: true })

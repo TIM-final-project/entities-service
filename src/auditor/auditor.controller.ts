@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { Body, Controller, Get, Logger, Param, Post, Put } from '@nestjs/common';
+import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { AuditorService } from './auditor.service';
 import { AuditorDto } from './dto/auditor.dto';
 import { CreateAuditorDto } from './dto/create-auditor.dto';
@@ -7,6 +7,8 @@ import { UpdateAuditorDto } from './dto/update-auditor.dto';
 
 @Controller('auditors')
 export class AuditorController {
+  private readonly logger = new Logger(AuditorController.name);
+
   constructor(private auditorService: AuditorService) {}
 
   // @Get()
@@ -24,7 +26,15 @@ export class AuditorController {
   // @Post()
   @MessagePattern('auditors_create')
   async create(@Body() auditor: CreateAuditorDto): Promise<AuditorDto> {
-    return await this.auditorService.create(auditor);
+    this.logger.debug('Creating Contractor', { auditor });
+    try {
+      return await this.auditorService.create(auditor);
+    } catch (error) {
+      this.logger.error('Error creating auditor', { error });
+      throw new RpcException({
+        message: 'Ya existe un auditor con el CUIT ingresado'
+      });
+    }
   }
 
   // @Put(':id')

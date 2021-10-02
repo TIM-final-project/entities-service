@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Logger, Param, Post, Put } from '@nestjs/common';
-import { MessagePattern, RpcException } from '@nestjs/microservices';
+import { Body, Controller, Logger } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleDto } from './dto/vehicle.dto';

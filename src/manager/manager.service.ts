@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateManagerDto } from './dto/create-manager.dto';
@@ -7,6 +8,8 @@ import { ManagerEntity } from './manager.entity';
 
 @Injectable()
 export class ManagerService {
+  private readonly logger = new Logger(ManagerService.name);
+
   constructor(
     @InjectRepository(ManagerEntity)
     private managerRepository: Repository<ManagerEntity>,
@@ -16,8 +19,18 @@ export class ManagerService {
     return this.managerRepository.find();
   }
 
-  findOne(id: number): Promise<ManagerEntity> {
-    return this.managerRepository.findOne(id);
+  async findOne(id: number): Promise<ManagerEntity> {
+    this.logger.debug('Getting manager', { id });
+    const manager = await this.managerRepository.findOne(id);
+
+    if (manager) {
+      return manager;
+    } else {
+      this.logger.error('Error getting manager', { id });
+      throw new RpcException({
+        message: `No existe un encargado con el id: ${id}`,
+      })
+    }
   }
 
   create(managerDto: CreateManagerDto): Promise<ManagerEntity> {
@@ -29,8 +42,24 @@ export class ManagerService {
     id: number,
     managerDto: UpdateManagerDto,
   ): Promise<ManagerEntity> {
+    const { cuit } = managerDto;
+
     const manager: ManagerEntity = await this.managerRepository.findOne(id);
-    this.managerRepository.merge(manager, managerDto);
-    return this.managerRepository.save(manager);
+    if (manager) {
+      this.managerRepository.merge(manager, managerDto);
+      try {
+        return await this.managerRepository.save(manager);
+      } catch (error) {
+        this.logger.error('Error updating manager', { error });
+        throw new RpcException({
+          message: `Ya existe un manager con el cuit: ${cuit}`,
+        })
+      }
+    } else {
+      this.logger.error('Error getting manager', { id });
+      throw new RpcException({
+        message: `No existe un encargado con el id: ${id}`,
+      })
+    }
   }
 }

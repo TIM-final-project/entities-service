@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { Body, Controller, Get, Logger, Param, Post, Put } from '@nestjs/common';
+import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { CreateManagerDto } from './dto/create-manager.dto';
 import { ManagerDto } from './dto/manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
@@ -7,6 +7,8 @@ import { ManagerService } from './manager.service';
 
 @Controller('managers')
 export class ManagerController {
+  private readonly logger = new Logger(ManagerController.name);
+
   constructor(private managerService: ManagerService) {}
 
   // @Get()
@@ -24,7 +26,15 @@ export class ManagerController {
   // @Post()
   @MessagePattern('managers_create')
   async create(@Body() manager: CreateManagerDto): Promise<ManagerDto> {
-    return this.managerService.create(manager);
+    this.logger.debug('Creating manager', { manager });
+    try {
+      return await this.managerService.create(manager);
+    } catch (error) {
+      this.logger.error('Error Creating manager', { error });
+      throw new RpcException({
+        message: 'Ya existe un encargado con el CUIT ingresado.',
+      });
+    }
   }
 
   // @Put(':id')

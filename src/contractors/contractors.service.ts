@@ -22,7 +22,6 @@ export class ContractorsService {
   }
 
   async findOne(id: number): Promise<ContractorEntity> {
-
     this.logger.debug('Getting contractor', { id });
     const contractor = await this.contractorRepository.findOne(id, {
       relations: ['drivers', 'vehicles'],
@@ -33,7 +32,7 @@ export class ContractorsService {
       this.logger.error('Error Getting contractor', { id });
       throw new RpcException({
         message: `No existe un contratista con el id: ${id}`,
-      })
+      });
     }
   }
 
@@ -57,7 +56,7 @@ export class ContractorsService {
         this.logger.error('Error updating Contractor', { error });
         throw new RpcException({
           message: `Ya existe un contratista con el cuit: ${cuit}`,
-        })
+        });
       }
     } else {
       this.logger.error(`Error updating Contractor ${id}`);

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AddressEntity } from 'src/common/entities/address.entity';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class SecurityEntity {
@@ -16,4 +17,22 @@ export class SecurityEntity {
 
   @Column({ nullable: true })
   birth_date?: Date;
+
+  @OneToOne(() => AddressEntity, {
+    cascade: true,
+  })
+  @JoinColumn()
+  address?: AddressEntity;
+
+  @CreateDateColumn()
+  created_at?: Date;
+
+  @UpdateDateColumn()
+  updated_at?: Date;
+
+  @Column({
+    nullable: false,
+    default: true,
+  })
+  active?: boolean;
 }

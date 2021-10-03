@@ -16,12 +16,22 @@ export class AuditorService {
   ) {}
 
   findAll(): Promise<AuditorEntity[]> {
-    return this.auditorRepository.find();
+    return this.auditorRepository.find({
+      where: {
+        active: true
+      },
+      relations: ['address']
+    });
   }
 
   async findOne(id: number): Promise<AuditorEntity> {
     this.logger.debug('Getting auditor', { id });
-    const auditor = await this.auditorRepository.findOne(id);
+    const auditor = await this.auditorRepository.findOne(id, {
+      where: {
+        active: true
+      },
+      relations: ['address']
+    });
     if (auditor) {
       return auditor;
     } else {

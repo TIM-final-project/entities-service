@@ -1,3 +1,4 @@
+import { AddressEntity } from 'src/common/entities/address.entity';
 import { DriverEntity } from 'src/driver/driver.entity';
 import { VehicleEntity } from 'src/vehicle/vehicle.entity';
 import {
@@ -5,6 +6,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -19,29 +24,34 @@ export class ContractorEntity {
 
   @Column({
     nullable: false,
-    unique:true
+    unique: true,
   })
   cuit: string;
 
-  @Column({
-    nullable: true,
-  })
-  street_address?: string;
+  // @Column({
+  //   nullable: true,
+  // })
+  // street_address?: string;
 
-  @Column({
-    nullable: true,
-  })
-  number_address?: number;
+  // @Column({
+  //   nullable: true,
+  // })
+  // number_address?: number;
 
-  @Column({
-    nullable: true,
-  })
-  city_address?: string;
+  // @Column({
+  //   nullable: true,
+  // })
+  // city_address?: string;
 
-  @Column({
-    nullable: true,
+  // @Column({
+  //   nullable: true,
+  // })
+  // province_address?: string;
+  @OneToOne(() => AddressEntity, {
+    cascade: true,
   })
-  province_address?: string;
+  @JoinColumn()
+  address: AddressEntity;
 
   @OneToMany((type) => DriverEntity, (driver) => driver.contractor, {
     nullable: true,
@@ -52,4 +62,16 @@ export class ContractorEntity {
     nullable: true,
   })
   vehicles?: VehicleEntity[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @Column({
+    nullable: false,
+    default: true,
+  })
+  active: boolean;
 }

@@ -16,12 +16,22 @@ export class ManagerService {
   ) {}
 
   findAll(): Promise<ManagerEntity[]> {
-    return this.managerRepository.find();
+    return this.managerRepository.find({
+      where: {
+        active: true,
+      },
+      relations: ['address']
+    });
   }
 
   async findOne(id: number): Promise<ManagerEntity> {
     this.logger.debug('Getting manager', { id });
-    const manager = await this.managerRepository.findOne(id);
+    const manager = await this.managerRepository.findOne(id, {
+      where: {
+        active: true,
+      },
+      relations: ['address']
+    });
 
     if (manager) {
       return manager;
@@ -44,7 +54,12 @@ export class ManagerService {
   ): Promise<ManagerEntity> {
     const { cuit } = managerDto;
 
-    const manager: ManagerEntity = await this.managerRepository.findOne(id);
+    const manager: ManagerEntity = await this.managerRepository.findOne(id, {
+      where: {
+        active: true,
+      },
+      relations: ['address']
+    });
     if (manager) {
       this.managerRepository.merge(manager, managerDto);
       try {

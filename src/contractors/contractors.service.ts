@@ -17,14 +17,20 @@ export class ContractorsService {
 
   findAll(): Promise<ContractorEntity[]> {
     return this.contractorRepository.find({
-      relations: ['drivers', 'vehicles'],
+      where: {
+        active: true
+      },
+      relations: ['drivers', 'vehicles', 'address'],
     });
   }
 
   async findOne(id: number): Promise<ContractorEntity> {
     this.logger.debug('Getting contractor', { id });
     const contractor = await this.contractorRepository.findOne(id, {
-      relations: ['drivers', 'vehicles'],
+      where: {
+        active: true
+      },
+      relations: ['drivers', 'vehicles', 'address'],
     });
     if (contractor) {
       return contractor;
@@ -45,11 +51,18 @@ export class ContractorsService {
     id: number,
     contractorDTO: UpdateContractorDto,
   ): Promise<ContractorEntity> {
+    this.logger.debug('Attempt to update contractor.', { id, contractorDTO });
     const { cuit } = contractorDTO;
     const contractor: ContractorEntity =
-      await this.contractorRepository.findOne(id);
+      await this.contractorRepository.findOne(id, {
+        where: {
+          active: true
+        },
+        relations: ['address']
+      });
     if (contractor) {
       this.contractorRepository.merge(contractor, contractorDTO);
+      this.logger.debug('Contractor after merge', { contractor });
       try {
         return await this.contractorRepository.save(contractor);
       } catch (error) {

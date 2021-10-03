@@ -16,12 +16,22 @@ export class SecurityService {
   ) {}
 
   findAll(): Promise<SecurityEntity[]> {
-    return this.securityRepository.find();
+    return this.securityRepository.find({
+      where: {
+        active: true,
+      },
+      relations: ['address'],
+    });
   }
 
   async findOne(id: number): Promise<SecurityEntity> {
     this.logger.debug('Getting security', { id });
-    const security = await this.securityRepository.findOne(id);
+    const security = await this.securityRepository.findOne(id, {
+      where: {
+        active: true,
+      },
+      relations: ['address'],
+    });
 
     if (security) {
       return security;
@@ -44,7 +54,12 @@ export class SecurityService {
   ): Promise<SecurityEntity> {
     const { cuit } = securityDto;
 
-    const security: SecurityEntity = await this.securityRepository.findOne(id);
+    const security: SecurityEntity = await this.securityRepository.findOne(id, {
+      where: {
+        active: true,
+      },
+      relations: ['address'],
+    });
 
     if (security) {
       this.securityRepository.merge(security, securityDto);

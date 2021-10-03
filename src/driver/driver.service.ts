@@ -20,12 +20,22 @@ export class DriverService {
   ) {}
 
   findAll(): Promise<DriverEntity[]> {
-    return this.driverRepository.find({ relations: ['contractor'] });
+    return this.driverRepository.find({ 
+      where: {
+        active: true,
+      },
+      relations: ['contractor', 'address']
+    });
   }
 
   async findOne(id: number): Promise<DriverEntity> {
     this.logger.debug('Getting driver', { id });
-    const driver = await this.driverRepository.findOne(id, { relations: ['contractor'] });
+    const driver = await this.driverRepository.findOne(id, { 
+      where: {
+        active: true
+      },
+      relations: ['contractor', 'address']
+    });
     if (driver) {
       return driver
     } else {
@@ -59,7 +69,11 @@ export class DriverService {
 
   async update(id: number, driverDto: UpdateDriverDto): Promise<DriverEntity> {
     this.logger.debug('Updating driver', { id });
-    const driver: DriverEntity = await this.driverRepository.findOne(id);
+    const driver: DriverEntity = await this.driverRepository.findOne(id, {
+      where: {
+        active: true,
+      }
+    });
     if (driver) {
       this.driverRepository.merge(driver, driverDto);
       try {

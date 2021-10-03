@@ -1,5 +1,5 @@
 import { ContractorEntity } from 'src/contractors/contractor.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class VehicleEntity {
@@ -31,4 +31,16 @@ export class VehicleEntity {
     nullable: true,
   })
   contractor?: ContractorEntity;
+
+  @CreateDateColumn()
+  created_at?: Date;
+
+  @UpdateDateColumn()
+  updated_at?: Date;
+
+  @Column({
+    nullable: false,
+    default: true,
+  })
+  active?: boolean;
 }

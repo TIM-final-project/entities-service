@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { ContractorsService } from 'src/contractors/contractors.service';
@@ -9,6 +10,8 @@ import { UpdateDriverDto } from './dto/update-driver.dto';
 
 @Injectable()
 export class DriverService {
+  private readonly logger = new Logger(DriverService.name);
+
   constructor(
     @InjectRepository(DriverEntity)
     private driverRepository: Repository<DriverEntity>,
@@ -17,26 +20,75 @@ export class DriverService {
   ) {}
 
   findAll(): Promise<DriverEntity[]> {
-    return this.driverRepository.find({ relations: ["contractor"] });
+    return this.driverRepository.find({ 
+      where: {
+        active: true,
+      },
+      relations: ['contractor', 'address']
+    });
   }
 
-  findOne(id: number): Promise<DriverEntity> {
-    return this.driverRepository.findOne(id, { relations: ["contractor"] });
+  async findOne(id: number): Promise<DriverEntity> {
+    this.logger.debug('Getting driver', { id });
+    const driver = await this.driverRepository.findOne(id, { 
+      where: {
+        active: true
+      },
+      relations: ['contractor', 'address']
+    });
+    if (driver) {
+      return driver
+    } else {
+      this.logger.error('Error Getting driver', { id });
+      throw new RpcException({
+        message: `No existe un conductor con el id: ${id}`,
+      })
+    }
   }
 
-  async create(contractorId: number, driverDto: CreateDriverDto): Promise<DriverEntity> {
-    const contractor: ContractorEntity = await this.contractorsService.findOne(contractorId);
-    const driver: DriverEntity = driverDto;
-    driver.contractor = contractor;
-    return this.driverRepository.save(driver);
-  }
-
-  async update(
-    id: number,
-    driverDto: UpdateDriverDto,
+  async create(
+    contractorId: number,
+    driverDto: CreateDriverDto,
   ): Promise<DriverEntity> {
-    const driver: DriverEntity = await this.driverRepository.findOne(id);
-    this.driverRepository.merge(driver, driverDto);
-    return this.driverRepository.save(driver);
+    this.logger.debug('Creating driver', { contractorId, driverDto });
+    const contractor: ContractorEntity = await this.contractorsService.findOne(
+      contractorId,
+    );
+    this.logger.debug(`Contractor ${contractorId} found`, { contractor });
+    try {
+      const driver: DriverEntity = driverDto;
+      driver.contractor = contractor;
+      return await this.driverRepository.save(driver);
+    } catch (error) {
+      this.logger.error('Error creating driver', { error });
+      throw new RpcException({
+        message: `Ya existe un conductor con el CUIT: ${driverDto.cuit}`,
+      });
+    }
+  }
+
+  async update(id: number, driverDto: UpdateDriverDto): Promise<DriverEntity> {
+    this.logger.debug('Updating driver', { id });
+    const driver: DriverEntity = await this.driverRepository.findOne(id, {
+      where: {
+        active: true,
+      }
+    });
+    if (driver) {
+      this.driverRepository.merge(driver, driverDto);
+      try {
+        return await this.driverRepository.save(driver);
+      } catch (error) {
+        this.logger.error('Error updating Driver', { error });
+        throw new RpcException({
+          message: `Ya existe un conductor con el cuit: ${driverDto.cuit}`,
+        })
+      }
+    } else {
+      this.logger.error('Error updating driver', { id });
+      throw new RpcException({
+        message: `No existe un conductor con el id: ${id}`,
+      })
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
@@ -7,6 +7,8 @@ import { VehicleService } from './vehicle.service';
 
 @Controller('vehicles')
 export class VehicleController {
+  private readonly logger = new Logger(VehicleController.name);
+
   constructor(private vehicleService: VehicleService) {}
 
   // @Get()
@@ -24,15 +26,16 @@ export class VehicleController {
   // @Post()
   @MessagePattern('vehicles_create')
   async create(@Body() vehicle: CreateVehicleDto): Promise<VehicleDto> {
+    this.logger.debug('Creating Contractor', { vehicle });
     const { contractorId } = vehicle;
     delete vehicle.contractorId;
-    return this.vehicleService.create(contractorId, vehicle);
+    return await this.vehicleService.create(contractorId, vehicle);
   }
 
   // @Put(':id')
   @MessagePattern('vehicles_update')
   async update(@Body() vehicle: UpdateVehicleDto): Promise<VehicleDto> {
-    console.log('Update Vehicle ', { vehicle });
+    this.logger.debug('Update vehicle request ', { vehicle });
     const { id } = vehicle;
     delete vehicle.id;
     return this.vehicleService.update(id, vehicle);

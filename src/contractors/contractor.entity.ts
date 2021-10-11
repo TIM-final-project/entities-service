@@ -27,26 +27,7 @@ export class ContractorEntity {
     unique: true,
   })
   cuit: string;
-
-  // @Column({
-  //   nullable: true,
-  // })
-  // street_address?: string;
-
-  // @Column({
-  //   nullable: true,
-  // })
-  // number_address?: number;
-
-  // @Column({
-  //   nullable: true,
-  // })
-  // city_address?: string;
-
-  // @Column({
-  //   nullable: true,
-  // })
-  // province_address?: string;
+  
   @OneToOne(() => AddressEntity, {
     cascade: true,
   })

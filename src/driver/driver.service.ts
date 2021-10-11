@@ -5,6 +5,7 @@ import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
 import { DriverEntity } from './driver.entity';
+import { DriversQPs } from './dto/driver.qps';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 
@@ -19,31 +20,46 @@ export class DriverService {
     private contractorsService: ContractorsService,
   ) {}
 
-  findAll(): Promise<DriverEntity[]> {
-    return this.driverRepository.find({ 
-      where: {
-        active: true,
-      },
-      relations: ['contractor', 'address']
+  findAll(driverQPs: DriversQPs): Promise<DriverEntity[]> {
+    return this.driverRepository.find({
+      where: { active: true, contractor: driverQPs.contractorId },
+      relations: ['address'],
     });
   }
 
   async findOne(id: number): Promise<DriverEntity> {
     this.logger.debug('Getting driver', { id });
-    const driver = await this.driverRepository.findOne(id, { 
+    const driver = await this.driverRepository.findOne(id, {
       where: {
-        active: true
+        active: true,
       },
-      relations: ['contractor', 'address']
+      relations: ['contractor', 'address'],
     });
     if (driver) {
-      return driver
+      return driver;
     } else {
       this.logger.error('Error Getting driver', { id });
       throw new RpcException({
         message: `No existe un conductor con el id: ${id}`,
-      })
+      });
     }
+  }
+
+  async findByContractor(contractorId: number): Promise<DriverEntity[]> {
+    this.logger.debug('Getting driver by contractor', { contractorId });
+    const drivers = await this.driverRepository.find({
+      where: [{ active: true }, { contractorId }],
+      relations: ['address'],
+    });
+    return drivers;
+    // if (driver) {
+    //   return driver
+    // } else {
+    //   this.logger.error('Error Getting driver', { contractorId });
+    //   throw new RpcException({
+    //     message: `No existen conductores para el contratista ${contractorId}`,
+    //   })
+    // }
   }
 
   async create(
@@ -72,7 +88,7 @@ export class DriverService {
     const driver: DriverEntity = await this.driverRepository.findOne(id, {
       where: {
         active: true,
-      }
+      },
     });
     if (driver) {
       this.driverRepository.merge(driver, driverDto);
@@ -82,13 +98,13 @@ export class DriverService {
         this.logger.error('Error updating Driver', { error });
         throw new RpcException({
           message: `Ya existe un conductor con el cuit: ${driverDto.cuit}`,
-        })
+        });
       }
     } else {
       this.logger.error('Error updating driver', { id });
       throw new RpcException({
         message: `No existe un conductor con el id: ${id}`,
-      })
+      });
     }
   }
 }

@@ -24,16 +24,14 @@ export class VehicleService {
     return this.vehicleRepository.find({ 
       where: {
         active: true,
-        contractor: vehicleQPs.contractorId
+        ...vehicleQPs
       }
     });
   }
 
   async findOne(id: number): Promise<VehicleEntity> {
     this.logger.debug('Getting vehicle', { id });
-    const vehicle = await this.vehicleRepository.findOne(id, {
-      relations: ['contractor'],
-    });
+    const vehicle = await this.vehicleRepository.findOne(id);
 
     if (vehicle) {
       return vehicle;

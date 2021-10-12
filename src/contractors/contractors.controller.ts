@@ -1,13 +1,15 @@
-import {
-  Body,
-  Controller,
-  Logger,
-} from '@nestjs/common';
+import { Body, Controller, Logger } from '@nestjs/common';
 import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { ContractorsService } from './contractors.service';
+import { ContractorQPs } from './dto/contracto.qps';
 import { ContractorDto } from './dto/contractor.dto';
 import { CreateContractorDto } from './dto/create-contractor.dto';
 import { UpdateContractorDto } from './dto/update-contractor.dto';
+
+interface header {
+  id: number;
+  contractorQPs: ContractorQPs;
+}
 
 @Controller('contractors')
 export class ContractorsController {
@@ -17,16 +19,18 @@ export class ContractorsController {
 
   // @Get()
   @MessagePattern('contractors_find_all')
-  async findAll(): Promise<ContractorDto[] | RpcException> {
-    this.logger.log('Getting contractors');
-    return this.contractorService.findAll();
+  async findAll(
+    contractorQPs: ContractorQPs,
+  ): Promise<ContractorDto[] | RpcException> {
+    this.logger.log('Getting contractors', { contractorQPs });
+    return this.contractorService.findAll(contractorQPs);
   }
 
   // @Get(':id')
   @MessagePattern('contractors_find_by_id')
-  async findOne(@Body('id') id: number): Promise<ContractorDto> {
-    this.logger.debug('Get Contractor by id ', { id });
-    return await this.contractorService.findOne(id);
+  async findOne({ id, contractorQPs }: header): Promise<ContractorDto> {
+    this.logger.debug('Get Contractor by id ', { id, contractorQPs });
+    return await this.contractorService.findOne(id, contractorQPs);
   }
 
   // @Post()

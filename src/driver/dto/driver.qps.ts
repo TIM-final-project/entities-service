@@ -1,3 +1,3 @@
 export class DriversQPs {
-  contractorId?: number;
+  contractor?: number;
 }

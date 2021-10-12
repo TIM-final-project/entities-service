@@ -22,7 +22,7 @@ export class DriverService {
 
   findAll(driverQPs: DriversQPs): Promise<DriverEntity[]> {
     return this.driverRepository.find({
-      where: { active: true, contractor: driverQPs.contractorId },
+      where: { active: true, ...driverQPs},
       relations: ['address'],
     });
   }
@@ -33,7 +33,7 @@ export class DriverService {
       where: {
         active: true,
       },
-      relations: ['contractor', 'address'],
+      relations: ['address'],
     });
     if (driver) {
       return driver;

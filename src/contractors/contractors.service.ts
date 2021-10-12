@@ -3,6 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContractorEntity } from './contractor.entity';
+import { ContractorQPs } from './dto/contracto.qps';
 import { CreateContractorDto } from './dto/create-contractor.dto';
 import { UpdateContractorDto } from './dto/update-contractor.dto';
 
@@ -15,22 +16,25 @@ export class ContractorsService {
     private contractorRepository: Repository<ContractorEntity>,
   ) {}
 
-  findAll(): Promise<ContractorEntity[]> {
+  findAll(contractorQPs?: ContractorQPs): Promise<ContractorEntity[]> {
+    let relations = contractorQPs?.relations ? contractorQPs.relations.split(',') : [];
+
     return this.contractorRepository.find({
       where: {
         active: true
       },
-      relations: ['drivers', 'vehicles', 'address'],
+     relations,
     });
   }
 
-  async findOne(id: number): Promise<ContractorEntity> {
-    this.logger.debug('Getting contractor', { id });
+  async findOne(id: number, contractorQPs?: ContractorQPs): Promise<ContractorEntity> {
+    this.logger.debug('Getting contractor', { id , contractorQPs });
+    let relations = contractorQPs?.relations ? contractorQPs.relations.split(',') : [];
     const contractor = await this.contractorRepository.findOne(id, {
       where: {
         active: true
       },
-      relations: ['drivers', 'vehicles', 'address'],
+      relations,
     });
     if (contractor) {
       return contractor;

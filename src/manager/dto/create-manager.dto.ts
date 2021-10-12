@@ -1,4 +1,4 @@
-import { Address } from "src/common/interfaces/address.interface";
+import { Address } from "src/common/dto/address.dto";
 
 export class CreateManagerDto {
   name: string;

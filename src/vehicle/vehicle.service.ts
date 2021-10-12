@@ -6,6 +6,7 @@ import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { VehiclesQPs } from './dto/vehicle.qps';
 import { VehicleEntity } from './vehicle.entity';
 
 @Injectable()
@@ -19,8 +20,13 @@ export class VehicleService {
     private contractorsService: ContractorsService,
   ) {}
 
-  findAll(): Promise<VehicleEntity[]> {
-    return this.vehicleRepository.find({ relations: ['contractor'] });
+  findAll(vehicleQPs: VehiclesQPs): Promise<VehicleEntity[]> {
+    return this.vehicleRepository.find({ 
+      where: {
+        active: true,
+        contractor: vehicleQPs.contractorId
+      }
+    });
   }
 
   async findOne(id: number): Promise<VehicleEntity> {

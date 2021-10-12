@@ -3,6 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleDto } from './dto/vehicle.dto';
+import { VehiclesQPs } from './dto/vehicle.qps';
 import { VehicleService } from './vehicle.service';
 
 @Controller('vehicles')
@@ -13,8 +14,9 @@ export class VehicleController {
 
   // @Get()
   @MessagePattern('vehicles_find_all')
-  async findAll(): Promise<VehicleDto[]> {
-    return this.vehicleService.findAll();
+  async findAll(vehicleQPs: VehiclesQPs): Promise<VehicleDto[]> {
+    this.logger.debug('Getting drivers', { vehicleQPs });
+    return this.vehicleService.findAll(vehicleQPs);
   }
 
   // @Get(':id')

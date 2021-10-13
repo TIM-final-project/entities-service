@@ -6,6 +6,11 @@ import { VehicleDto } from './dto/vehicle.dto';
 import { VehiclesQPs } from './dto/vehicle.qps';
 import { VehicleService } from './vehicle.service';
 
+interface header {
+  id: number;
+  vehicleQPs: VehiclesQPs;
+}
+
 @Controller('vehicles')
 export class VehicleController {
   private readonly logger = new Logger(VehicleController.name);
@@ -15,14 +20,16 @@ export class VehicleController {
   // @Get()
   @MessagePattern('vehicles_find_all')
   async findAll(vehicleQPs: VehiclesQPs): Promise<VehicleDto[]> {
-    this.logger.debug('Getting drivers', { vehicleQPs });
+    this.logger.debug('Getting vehicles', { vehicleQPs });
     return this.vehicleService.findAll(vehicleQPs);
   }
 
   // @Get(':id')
   @MessagePattern('vehicles_find_by_id')
-  async findOne(@Body('id') id: number): Promise<VehicleDto> {
-    return this.vehicleService.findOne(id);
+  async findOne({ id, vehicleQPs }: header): Promise<VehicleDto> {
+    console.log(vehicleQPs);
+    this.logger.debug('Getting vehicle by id', { id, vehicleQPs });
+    return this.vehicleService.findOne(id, vehicleQPs);
   }
 
   // @Post()

@@ -21,17 +21,26 @@ export class VehicleService {
   ) {}
 
   findAll(vehicleQPs: VehiclesQPs): Promise<VehicleEntity[]> {
+    this.logger.debug('Drivers find all', { vehicleQPs });
+    let relations = vehicleQPs?.relations ? vehicleQPs.relations.split(',') : [];
+    delete vehicleQPs?.relations;
+
     return this.vehicleRepository.find({ 
       where: {
         active: true,
         ...vehicleQPs
-      }
+      },
+      relations
     });
   }
 
-  async findOne(id: number): Promise<VehicleEntity> {
-    this.logger.debug('Getting vehicle', { id });
-    const vehicle = await this.vehicleRepository.findOne(id);
+  async findOne(id: number, vehicleQPs?: VehiclesQPs): Promise<VehicleEntity> {
+    this.logger.debug('Getting vehicle', { id, vehicleQPs });
+    let relations = vehicleQPs?.relations ? vehicleQPs.relations.split(',') : [];
+
+    const vehicle = await this.vehicleRepository.findOne(id, {
+      relations
+    });
 
     if (vehicle) {
       return vehicle;

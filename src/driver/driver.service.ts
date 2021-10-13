@@ -21,19 +21,24 @@ export class DriverService {
   ) {}
 
   findAll(driverQPs: DriversQPs): Promise<DriverEntity[]> {
+    let relations = driverQPs?.relations ? driverQPs.relations.split(',') : [];
+    delete driverQPs?.relations;
+    
     return this.driverRepository.find({
       where: { active: true, ...driverQPs},
-      relations: ['address'],
+      relations
     });
   }
 
-  async findOne(id: number): Promise<DriverEntity> {
-    this.logger.debug('Getting driver', { id });
+  async findOne(id: number, driverQPs?: DriversQPs): Promise<DriverEntity> {
+    this.logger.debug('Getting driver', { id, driverQPs });
+    let relations = driverQPs?.relations ? driverQPs.relations.split(',') : [];
+
     const driver = await this.driverRepository.findOne(id, {
       where: {
         active: true,
       },
-      relations: ['address'],
+      relations,
     });
     if (driver) {
       return driver;

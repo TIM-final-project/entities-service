@@ -6,6 +6,11 @@ import { CreateDriverDto } from './dto/create-driver.dto';
 import { DriverDto } from './dto/driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 
+interface header {
+  id: number,
+  driverQPs: DriversQPs
+}
+
 @Controller('drivers')
 export class DriverController {
   private readonly logger = new Logger(DriverController.name);
@@ -21,9 +26,9 @@ export class DriverController {
 
   // @Get(':id')
   @MessagePattern('drivers_find_by_id')
-  async findOne(@Body('id') id: number): Promise<DriverDto> {
-    this.logger.debug(`Getting driver id: ${id}`);
-    return await this.driverService.findOne(id);
+  async findOne({ id, driverQPs }: header): Promise<DriverDto> {
+    this.logger.debug(`Getting driver id: ${id}`, driverQPs);
+    return await this.driverService.findOne(id, driverQPs);
   }
 
   // @Post()

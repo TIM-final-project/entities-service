@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { ContractorEntity } from './contractor.entity';
 import { ContractorQPs } from './dto/contracto.qps';
 import { CreateContractorDto } from './dto/create-contractor.dto';
 import { UpdateContractorDto } from './dto/update-contractor.dto';
+import { ContractorQuery } from './interfaces/contractor-query.interface';
 
 @Injectable()
 export class ContractorsService {
@@ -19,11 +20,17 @@ export class ContractorsService {
   findAll(contractorQPs?: ContractorQPs): Promise<ContractorEntity[]> {
     let relations = contractorQPs?.relations ? contractorQPs.relations.split(',') : [];
 
+    const where: ContractorQuery = {
+      active: true,
+    }
+
+    if (contractorQPs?.contractorIds?.length) {
+      where.id = In(contractorQPs.contractorIds);
+    }
+
     return this.contractorRepository.find({
-      where: {
-        active: true
-      },
-     relations,
+      where,
+      relations,
     });
   }
 

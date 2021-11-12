@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 // environment
-const NODE_ENV: string = process.env.NODE_ENV || 'local'
+const NODE_ENV: string = process.env.NODE_ENV || 'dev'
 
 //application
 const PORT: number = +process.env.PORT || 3002

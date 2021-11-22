@@ -23,7 +23,16 @@ export class VehicleService {
   findAll(vehicleQPs: VehiclesQPs): Promise<VehicleEntity[]> {
     this.logger.debug('Drivers find all', { vehicleQPs });
     let relations = vehicleQPs?.relations ? vehicleQPs.relations.split(',') : [];
+    let ids = vehicleQPs?.ids ? vehicleQPs.ids : [];
     delete vehicleQPs?.relations;
+    delete vehicleQPs?.ids;
+
+    if(ids.length){
+      return this.vehicleRepository.findByIds(ids,{
+        where: { active: true, ...vehicleQPs},
+        relations
+      });
+    }
 
     return this.vehicleRepository.find({ 
       where: {

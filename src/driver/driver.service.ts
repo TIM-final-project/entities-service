@@ -22,8 +22,17 @@ export class DriverService {
 
   findAll(driverQPs: DriversQPs): Promise<DriverEntity[]> {
     let relations = driverQPs?.relations ? driverQPs.relations.split(',') : [];
+    let ids = driverQPs?.ids ? driverQPs.ids : [];
     delete driverQPs?.relations;
+    delete driverQPs?.ids;
     
+    if(ids.length){
+      return this.driverRepository.findByIds(ids,{
+        where: { active: true, ...driverQPs},
+        relations
+      });
+    }
+
     return this.driverRepository.find({
       where: { active: true, ...driverQPs},
       relations

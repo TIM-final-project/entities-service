@@ -18,23 +18,23 @@ export class DriverService {
     private driverRepository: Repository<DriverEntity>,
     @Inject(ContractorsService)
     private contractorsService: ContractorsService,
-  ) {}
+  ) { }
 
   findAll(driverQPs: DriversQPs): Promise<DriverEntity[]> {
     let relations = driverQPs?.relations ? driverQPs.relations.split(',') : [];
     let ids = driverQPs?.ids ? driverQPs.ids : [];
     delete driverQPs?.relations;
     delete driverQPs?.ids;
-    
-    if(ids.length){
-      return this.driverRepository.findByIds(ids,{
-        where: { active: true, ...driverQPs},
+
+    if (ids.length) {
+      return this.driverRepository.findByIds(ids, {
+        where: { active: true, ...driverQPs },
         relations
       });
     }
 
     return this.driverRepository.find({
-      where: { active: true, ...driverQPs},
+      where: { active: true, ...driverQPs },
       relations
     });
   }
@@ -59,21 +59,12 @@ export class DriverService {
     }
   }
 
-  async findByContractor(contractorId: number): Promise<DriverEntity[]> {
+  findByContractor(contractorId: number): Promise<DriverEntity[]> {
     this.logger.debug('Getting driver by contractor', { contractorId });
-    const drivers = await this.driverRepository.find({
+    return this.driverRepository.find({
       where: [{ active: true }, { contractorId }],
       relations: ['address'],
     });
-    return drivers;
-    // if (driver) {
-    //   return driver
-    // } else {
-    //   this.logger.error('Error Getting driver', { contractorId });
-    //   throw new RpcException({
-    //     message: `No existen conductores para el contratista ${contractorId}`,
-    //   })
-    // }
   }
 
   async create(

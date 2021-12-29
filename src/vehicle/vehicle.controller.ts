@@ -19,14 +19,14 @@ export class VehicleController {
 
   // @Get()
   @MessagePattern('vehicles_find_all')
-  async findAll(vehicleQPs: VehiclesQPs): Promise<VehicleDto[]> {
+  findAll(vehicleQPs: VehiclesQPs): Promise<VehicleDto[]> {
     this.logger.debug('Getting vehicles', { vehicleQPs });
     return this.vehicleService.findAll(vehicleQPs);
   }
 
   // @Get(':id')
   @MessagePattern('vehicles_find_by_id')
-  async findOne({ id, vehicleQPs }: header): Promise<VehicleDto> {
+  findOne({ id, vehicleQPs }: header): Promise<VehicleDto> {
     console.log(vehicleQPs);
     this.logger.debug('Getting vehicle by id', { id, vehicleQPs });
     return this.vehicleService.findOne(id, vehicleQPs);
@@ -34,16 +34,16 @@ export class VehicleController {
 
   // @Post()
   @MessagePattern('vehicles_create')
-  async create(@Body() vehicle: CreateVehicleDto): Promise<VehicleDto> {
+  create(@Body() vehicle: CreateVehicleDto): Promise<VehicleDto> {
     this.logger.debug('Creating Contractor', { vehicle });
     const { contractorId } = vehicle;
     delete vehicle.contractorId;
-    return await this.vehicleService.create(contractorId, vehicle);
+    return this.vehicleService.create(contractorId, vehicle);
   }
 
   // @Put(':id')
   @MessagePattern('vehicles_update')
-  async update(@Body() vehicle: UpdateVehicleDto): Promise<VehicleDto> {
+  update(@Body() vehicle: UpdateVehicleDto): Promise<VehicleDto> {
     this.logger.debug('Update vehicle request ', { vehicle });
     const { id } = vehicle;
     delete vehicle.id;

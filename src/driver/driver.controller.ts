@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Logger, Param, Post, Put } from '@nestjs/common';
-import { MessagePattern, RpcException } from '@nestjs/microservices';
+import { Body, Controller, Logger,} from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { DriversQPs } from './dto/driver.qps';
 import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
@@ -26,9 +26,9 @@ export class DriverController {
 
   // @Get(':id')
   @MessagePattern('drivers_find_by_id')
-  async findOne({ id, driverQPs }: header): Promise<DriverDto> {
+  findOne({ id, driverQPs }: header): Promise<DriverDto> {
     this.logger.debug(`Getting driver id: ${id}`, driverQPs);
-    return await this.driverService.findOne(id, driverQPs);
+    return this.driverService.findOne(id, driverQPs);
   }
 
   // @Post()

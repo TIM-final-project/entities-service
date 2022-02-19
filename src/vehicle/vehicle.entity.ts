@@ -38,9 +38,4 @@ export class VehicleEntity {
   @UpdateDateColumn()
   updated_at?: Date;
 
-  @Column({
-    nullable: false,
-    default: true,
-  })
-  active?: boolean;
 }

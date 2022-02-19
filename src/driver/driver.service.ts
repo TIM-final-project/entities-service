@@ -8,6 +8,8 @@ import { DriverEntity } from './driver.entity';
 import { DriversQPs } from './dto/driver.qps';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { DriverDto } from './dto/driver.dto';
 
 @Injectable()
 export class DriverService {
@@ -20,26 +22,28 @@ export class DriverService {
     private contractorsService: ContractorsService,
   ) { }
 
-  findAll(driverQPs: DriversQPs): Promise<DriverEntity[]> {
-    let relations = driverQPs?.relations ? driverQPs.relations.split(',') : [];
-    let ids = driverQPs?.ids ? driverQPs.ids : [];
-    delete driverQPs?.relations;
-    delete driverQPs?.ids;
+  async findAll(driverQPs: DriversQPs): Promise<DriverDto[]> {
+    let relations = driverQPs.relations ? driverQPs.relations.split(',') : [];
+    let ids = driverQPs.ids ? driverQPs.ids : [];
+    delete driverQPs.relations;
+    delete driverQPs.ids;
 
     if (ids.length) {
-      return this.driverRepository.findByIds(ids, {
+      const driversById: DriverEntity[] = await this.driverRepository.findByIds(ids, {
         where: { active: true, ...driverQPs },
         relations
       });
+      return driversById.map((driver: DriverEntity) => plainToInstance(DriverDto, driver));
     }
 
-    return this.driverRepository.find({
+    const drivers = await this.driverRepository.find({
       where: { active: true, ...driverQPs },
       relations
     });
+    return drivers.map((driver: DriverEntity) => plainToInstance(DriverDto, driver));
   }
 
-  async findOne(id: number, driverQPs?: DriversQPs): Promise<DriverEntity> {
+  async findOne(id: number, driverQPs?: DriversQPs): Promise<DriverDto> {
     this.logger.debug('Getting driver', { id, driverQPs });
     let relations = driverQPs?.relations ? driverQPs.relations.split(',') : [];
 
@@ -50,7 +54,7 @@ export class DriverService {
       relations,
     });
     if (driver) {
-      return driver;
+      return plainToClass(DriverDto,driver);
     } else {
       this.logger.error('Error Getting driver', { id });
       throw new RpcException({

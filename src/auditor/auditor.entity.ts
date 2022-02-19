@@ -1,46 +1,14 @@
-import { AddressEntity } from 'src/common/entities/address.entity';
+import { GenericEntity } from 'src/common/entities/generic_entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class AuditorEntity {
-  @PrimaryGeneratedColumn()
-  id?: number;
-
-  @Column({ nullable: false })
-  name: string;
-
-  @Column({ nullable: false })
+export class AuditorEntity extends GenericEntity {
+   @Column({ nullable: false })
   surname: string;
-
-  @Column({ nullable: false, unique: true })
-  cuit: string;
 
   @Column({ nullable: true })
   birth_date: Date;
-
-  @OneToOne(() => AddressEntity, {
-    cascade: true,
-  })
-  @JoinColumn()
-  address: AddressEntity;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @Column({
-    nullable: false,
-    default: true,
-  })
-  active: boolean;
 }

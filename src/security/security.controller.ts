@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { plainToInstance } from 'class-transformer';
 import { CreateSecurityDto } from './dto/create-security.dto';
 import { SecurityDto } from './dto/security.dto';
 import { UpdateSecurityDto } from './dto/update-security.dto';
+import { SecurityEntity } from './security.entity';
 import { SecurityService } from './security.service';
 
 @Controller('securities')
@@ -12,19 +14,20 @@ export class SecurityController {
   // @Get()
   @MessagePattern('securities_find_all')
   async findAll(): Promise<SecurityDto[]> {
-    return await this.securityService.findAll();
+    const securities: SecurityEntity[] = await this.securityService.findAll();
+    return securities.map((security: SecurityEntity) => plainToInstance(SecurityDto, security ));
   }
 
   // @Get(':id')
   @MessagePattern('securities_find_by_id')
   async findOne(@Body('id') id: number): Promise<SecurityDto> {
-    return await this.securityService.findOne(id);
+    return plainToInstance(SecurityDto, this.securityService.findOne(id));
   }
 
   // @Post()
   @MessagePattern('securities_create')
   async create(@Body() security: CreateSecurityDto): Promise<SecurityDto> {
-    return await this.securityService.create(security);
+    return plainToInstance(SecurityDto, this.securityService.create(security));
   }
 
   // @Put(':id')
@@ -33,6 +36,6 @@ export class SecurityController {
     console.log('Update securiy request ', { security });
     const { id } = security;
     delete security.id; 
-    return await this.securityService.update(id, security);
+    return plainToInstance(SecurityDto, this.securityService.update(id, security));
   }
 }

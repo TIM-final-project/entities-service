@@ -5,6 +5,7 @@ import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { DriverDto } from './dto/driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { plainToInstance } from 'class-transformer';
 
 interface header {
   id: number,
@@ -36,7 +37,7 @@ export class DriverController {
   async create(@Body() driverDto: CreateDriverDto): Promise<DriverDto> {
     const { contractorId } = driverDto;
     delete driverDto.contractorId;
-    return this.driverService.create(contractorId, driverDto);
+    return plainToInstance(DriverDto, await this.driverService.create(contractorId, driverDto));
   }
 
   // @Put(':id')

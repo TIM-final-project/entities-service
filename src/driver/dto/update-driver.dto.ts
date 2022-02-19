@@ -1,4 +1,4 @@
-import { Address } from "src/common/dto/address.dto";
+import { AddressDto } from "src/common/dto/address.dto";
 
 export class UpdateDriverDto {
   id: number;
@@ -6,5 +6,5 @@ export class UpdateDriverDto {
   surname?: string;
   cuit?: string;
   birth_date?: Date;
-  address?: Address;
+  address?: AddressDto;
 }

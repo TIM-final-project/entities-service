@@ -1,10 +1,14 @@
-import { Address } from "src/common/dto/address.dto";
+import { AddressDto } from "src/common/dto/address.dto";
+import { EntityDto } from "src/common/dto/entity.dto";
+import { IntersectionType } from '@nestjs/swagger';
 
-export class SecurityDto {
-  id?: number;
-  name: string;
+class SecurityData {
   surname: string;
-  cuit: string;
   birth_date?: Date;
-  address?: Address;
+  address?: AddressDto;
 }
+
+export class SecurityDto extends IntersectionType(
+    EntityDto,
+    SecurityData
+){}

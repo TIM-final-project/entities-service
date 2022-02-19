@@ -1,8 +1,8 @@
+import { AddressDto } from "src/common/dto/address.dto";
+
 export class CreateContractorDto {
+  username: string;
   name: string;
   cuit: string;
-  street_address?: string;
-  number_address?: number;
-  city_address?: string;
-  province_address?: string;
+  address: AddressDto;
 }

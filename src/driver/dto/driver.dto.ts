@@ -1,10 +1,15 @@
 import { ContractorDto } from "src/contractors/dto/contractor.dto";
+import { IntersectionType } from '@nestjs/swagger';
+import { EntityDto } from "src/common/dto/entity.dto";
 
-export class DriverDto {
-  id?: number;
-  name: string;
+
+class DriverData {
   surname: string;
-  cuit: string;
   birth_date?: Date;
   contractor?: ContractorDto;
 }
+
+export class DriverDto extends IntersectionType(
+  EntityDto,
+  DriverData
+){}

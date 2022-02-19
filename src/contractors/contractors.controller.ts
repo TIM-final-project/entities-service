@@ -1,5 +1,7 @@
 import { Body, Controller, Logger } from '@nestjs/common';
 import { MessagePattern, RpcException } from '@nestjs/microservices';
+import { plainToInstance } from 'class-transformer';
+import { ContractorEntity } from './contractor.entity';
 import { ContractorsService } from './contractors.service';
 import { ContractorQPs } from './dto/contracto.qps';
 import { ContractorDto } from './dto/contractor.dto';
@@ -21,26 +23,28 @@ export class ContractorsController {
   @MessagePattern('contractors_find_all')
   async findAll(
     contractorQPs: ContractorQPs,
-  ): Promise<ContractorDto[] | RpcException> {
+  ): Promise<ContractorDto[]> {
     this.logger.log('Getting contractors', { contractorQPs });
-    return this.contractorService.findAll(contractorQPs);
+    const contractors : ContractorEntity[] = await this.contractorService.findAll(contractorQPs);
+
+    return contractors.map((contractor: ContractorEntity) => plainToInstance(ContractorDto, contractor));
   }
 
   // @Get(':id')
   @MessagePattern('contractors_find_by_id')
   async findOne({ id, contractorQPs }: header): Promise<ContractorDto> {
     this.logger.debug('Get Contractor by id ', { id, contractorQPs });
-    return await this.contractorService.findOne(id, contractorQPs);
+    return plainToInstance(ContractorDto, await this.contractorService.findOne(id, contractorQPs));
   }
 
   // @Post()
   @MessagePattern('contractors_create')
   async create(
     @Body() createContractorDto: CreateContractorDto,
-  ): Promise<ContractorDto | RpcException> {
+  ): Promise<ContractorDto> {
     this.logger.debug('Creating Contractor', { createContractorDto });
     try {
-      return await this.contractorService.create(createContractorDto);
+      return plainToInstance(ContractorDto, await this.contractorService.create(createContractorDto));
     } catch (error) {
       this.logger.error('Error Creating Contractor', { error });
       throw new RpcException({

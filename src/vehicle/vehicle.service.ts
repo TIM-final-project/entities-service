@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToClass, plainToInstance } from 'class-transformer';
 import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
@@ -8,6 +9,7 @@ import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehiclesQPs } from './dto/vehicle.qps';
 import { VehicleEntity } from './vehicle.entity';
+
 
 @Injectable()
 export class VehicleService {
@@ -94,7 +96,7 @@ export class VehicleService {
     if (vehicle) {
       this.vehicleRepository.merge(vehicle, vehicleDto);
       try {
-        return await this.vehicleRepository.save(vehicle);
+        return plainToInstance(VehicleEntity, this.vehicleRepository.save(vehicle));
       } catch (error) {
         this.logger.error('Error updating vehicle', { id });
         throw new RpcException({

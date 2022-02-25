@@ -4,5 +4,5 @@ export class EntityDto {
     cuit: string;
     username: string;
     email: string;
-    phone: string;
+    phone?: string;
 }

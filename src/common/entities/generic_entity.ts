@@ -30,7 +30,7 @@ export abstract class GenericEntity{
     @Column({
         nullable: true
     })
-    phone: string;
+    phone?: string;
 
     @Type(() => AddressEntity)
     @OneToOne(() => AddressEntity, {

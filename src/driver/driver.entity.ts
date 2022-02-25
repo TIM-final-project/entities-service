@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import { GenericEntity } from 'src/common/entities/generic_entity';
 import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';

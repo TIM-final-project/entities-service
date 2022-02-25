@@ -5,7 +5,7 @@ export class CreateSecurityDto {
   name: string;
   surname: string;
   email: string;
-  phone: string;
+  phone?: string;
   cuit: string;
   birth_date?: Date;
   address?: AddressDto;

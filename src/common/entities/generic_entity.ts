@@ -22,9 +22,7 @@ export abstract class GenericEntity{
     })
     cuit: string;
 
-    @Column({
-        unique: true,
-    })
+    @Column()
     email: string;
 
     @Column()

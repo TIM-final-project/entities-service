@@ -22,6 +22,14 @@ export abstract class GenericEntity{
     })
     cuit: string;
 
+    @Column({
+        unique: true,
+    })
+    email: string;
+
+    @Column()
+    phone: string;
+
     @Type(() => AddressEntity)
     @OneToOne(() => AddressEntity, {
         cascade: true,

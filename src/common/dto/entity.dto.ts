@@ -3,4 +3,6 @@ export class EntityDto {
     name: string;
     cuit: string;
     username: string;
+    email: string;
+    phone: string;
 }

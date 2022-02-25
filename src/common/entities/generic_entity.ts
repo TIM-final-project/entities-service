@@ -22,10 +22,14 @@ export abstract class GenericEntity{
     })
     cuit: string;
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     email: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     phone: string;
 
     @Type(() => AddressEntity)

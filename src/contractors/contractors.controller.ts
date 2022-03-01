@@ -1,4 +1,4 @@
-import { Body, Controller, Logger } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { ContractorEntity } from './contractor.entity';
@@ -40,11 +40,12 @@ export class ContractorsController {
   // @Post()
   @MessagePattern('contractors_create')
   async create(
-    @Body() createContractorDto: CreateContractorDto,
+    createContractorDto: CreateContractorDto,
   ): Promise<ContractorDto> {
     this.logger.debug('Creating Contractor', { createContractorDto });
     try {
-      return plainToInstance(ContractorDto, await this.contractorService.create(createContractorDto));
+      const contractor : ContractorEntity = await this.contractorService.create(createContractorDto)
+      return plainToInstance(ContractorDto, contractor);
     } catch (error) {
       this.logger.error('Error Creating Contractor', { error });
       throw new RpcException({
@@ -56,11 +57,10 @@ export class ContractorsController {
   // @Put(':id')
   @MessagePattern('contractors_update')
   async update(
-    @Body() updateContractorDto: UpdateContractorDto,
+    updateDTO: {id: number, dto: UpdateContractorDto },
   ): Promise<ContractorDto> {
-    this.logger.debug('Update contractor request ', { updateContractorDto });
-    const { id } = updateContractorDto;
-    delete updateContractorDto.id;
-    return this.contractorService.update(id, updateContractorDto);
+    this.logger.debug('Update contractor request ', updateDTO.dto );
+    
+    return this.contractorService.update(updateDTO.id, updateDTO.dto);
   }
 }

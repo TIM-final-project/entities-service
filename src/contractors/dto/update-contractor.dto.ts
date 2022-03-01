@@ -1,9 +1,4 @@
-import { AddressDto } from "src/common/dto/address.dto";
+import { PartialType } from "@nestjs/swagger";
+import { CreateContractorDto } from "./create-contractor.dto";
 
-export class UpdateContractorDto {
-  id: number;
-  username?: string;
-  name?: string;
-  cuit: string;
-  address?: AddressDto;
-}
+export class UpdateContractorDto extends PartialType(CreateContractorDto){}

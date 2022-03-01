@@ -1,10 +1,4 @@
-import { AddressDto } from "src/common/dto/address.dto";
+import { PartialType } from "@nestjs/swagger";
+import { CreateManagerDto } from "./create-manager.dto";
 
-export class UpdateManagerDto {
-  id: number;
-  name?: string;
-  surname?: string;
-  cuit?: string;
-  birth_date?: Date;
-  address?: AddressDto;
-}
+export class UpdateManagerDto extends PartialType(CreateManagerDto) {}

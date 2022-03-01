@@ -3,7 +3,6 @@ import { IntersectionType } from '@nestjs/swagger';
 import { EntityDto } from "src/common/dto/entity.dto";
 import { Type } from "class-transformer";
 
-
 class ManagerData {
   surname: string;
 

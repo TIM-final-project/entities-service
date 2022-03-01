@@ -90,17 +90,16 @@ export class VehicleService {
     id: number,
     vehicleDto: UpdateVehicleDto,
   ): Promise<VehicleEntity> {
-    const { plate } = vehicleDto;
     const vehicle: VehicleEntity = await this.vehicleRepository.findOne(id);
     
     if (vehicle) {
       this.vehicleRepository.merge(vehicle, vehicleDto);
       try {
-        return plainToInstance(VehicleEntity, this.vehicleRepository.save(vehicle));
+        return await this.vehicleRepository.save(vehicle);
       } catch (error) {
         this.logger.error('Error updating vehicle', { id });
         throw new RpcException({
-          message: `Ya existe un vehiculo con la patente: ${plate}`,
+          message: `No es posible modificar el vehiculo`
         });
       }
     } else {

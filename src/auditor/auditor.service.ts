@@ -51,7 +51,6 @@ export class AuditorService {
     id: number,
     auditorDto: UpdateAuditorDto,
   ): Promise<AuditorEntity> {
-    const { cuit } = auditorDto;
     const auditor: AuditorEntity = await this.auditorRepository.findOne(id);
     
     if (auditor) {
@@ -61,7 +60,7 @@ export class AuditorService {
       } catch (error) {
         this.logger.error('Error updating auditor', { error });
         throw new RpcException({
-          message: `Ya existe un auditor con el cuit: ${cuit}`,
+          message: `No es posible modificar el auditor`,
         })
       }
     } else {

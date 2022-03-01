@@ -42,10 +42,10 @@ export class DriverController {
 
   // @Put(':id')
   @MessagePattern('drivers_update')
-  async update(@Body() driver: UpdateDriverDto) {
-    console.log('Update driver request ', { driver });
-    const { id } = driver;
-    delete driver.id;
-    return this.driverService.update(id, driver);
+  async update(
+    updateDTO: {id: number, dto: UpdateDriverDto },
+  ) {
+    console.log('Update driver request ', updateDTO.dto);
+    return this.driverService.update(updateDTO.id, updateDTO.dto);
   }
 }

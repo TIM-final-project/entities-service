@@ -43,17 +43,23 @@ export class SecurityService {
     }
   }
 
-  create(securityDto: CreateSecurityDto): Promise<SecurityEntity> {
-    const security: SecurityEntity = securityDto;
-    return this.securityRepository.save(security);
+  async create(securityDto: CreateSecurityDto): Promise<SecurityEntity> {
+    try{
+      const security: SecurityEntity = securityDto;
+      return await this.securityRepository.save(security);
+
+    } catch (error) {
+      this.logger.error('Error creating security', { error });
+      throw new RpcException({
+        message: `Ya existe un guardia con cuit: ${securityDto.cuit}`,
+      });
+    }
   }
 
   async update(
     id: number,
     securityDto: UpdateSecurityDto,
   ): Promise<SecurityEntity> {
-    const { cuit } = securityDto;
-
     const security: SecurityEntity = await this.securityRepository.findOne(id, {
       where: {
         active: true,
@@ -68,7 +74,7 @@ export class SecurityService {
       } catch (error) {
         this.logger.error('Error updating security', { error });
         throw new RpcException({
-          message: `Ya existe un guardia con el cuit: ${cuit}`,
+          message: `No es posible modificar al guardia`,
         });
       }
     } else {

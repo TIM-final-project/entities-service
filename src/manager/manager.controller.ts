@@ -39,10 +39,10 @@ export class ManagerController {
 
   // @Put(':id')
   @MessagePattern('managers_update')
-  async update(@Body() manager: UpdateManagerDto): Promise<ManagerDto> {
-    console.log('Update manager request ', { manager });
-    const { id } = manager;
-    delete manager.id;
-    return this.managerService.update(id, manager);
+  async update(
+    updateDTO: {id: number, dto: UpdateManagerDto },
+  ): Promise<ManagerDto> {
+    console.log('Update manager request ', updateDTO.dto);
+    return this.managerService.update(updateDTO.id, updateDTO.dto);
   }
 }

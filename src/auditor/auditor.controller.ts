@@ -22,13 +22,13 @@ export class AuditorController {
 
   // @Get(':id')
   @MessagePattern('auditors_find_by_id')
-  async finOne(@Body('id') id: number): Promise<AuditorDto> {
+  async finOne(id: number): Promise<AuditorDto> {
     return plainToInstance(AuditorDto, await this.auditorService.findOne(id));
   }
 
   // @Post()
   @MessagePattern('auditors_create')
-  async create(@Body() auditor: CreateAuditorDto): Promise<AuditorDto> {
+  async create(auditor: CreateAuditorDto): Promise<AuditorDto> {
     this.logger.debug('Creating Contractor', { auditor });
     try {
       return plainToInstance(AuditorDto, await this.auditorService.create(auditor));
@@ -42,10 +42,10 @@ export class AuditorController {
 
   // @Put(':id')
   @MessagePattern('auditors_update')
-  async update(@Body() auditor: UpdateAuditorDto) {
-    console.log('Update auditor request ', { ...auditor });
-    const { id } = auditor;
-    delete auditor.id;
-    return this.auditorService.update(id, auditor);
+  async update(    
+    updateDTO: {id: number, dto: UpdateAuditorDto }
+  ) {
+    this.logger.debug('Updating auditor request ', updateDTO);
+    return this.auditorService.update(updateDTO.id, updateDTO.dto);
   }
 }

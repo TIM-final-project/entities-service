@@ -106,7 +106,7 @@ export class DriverService {
       } catch (error) {
         this.logger.error('Error updating Driver', { error });
         throw new RpcException({
-          message: `Ya existe un conductor con el cuit: ${driverDto.cuit}`,
+          message: `No es posible modificar el conductor`,
         });
       }
     } else {

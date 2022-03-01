@@ -1,10 +1,4 @@
-import { AddressDto } from "src/common/dto/address.dto";
+import { PartialType } from "@nestjs/swagger";
+import { CreateDriverDto } from "./create-driver.dto";
 
-export class UpdateDriverDto {
-  id: number;
-  name?: string;
-  surname?: string;
-  cuit?: string;
-  birth_date?: Date;
-  address?: AddressDto;
-}
+export class UpdateDriverDto extends PartialType(CreateDriverDto) {}

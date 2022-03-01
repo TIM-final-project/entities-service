@@ -1,12 +1,4 @@
-import { AddressDto } from "src/common/dto/address.dto";
-import { OmitType } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
+import { CreateSecurityDto } from "./create-security.dto";
 
-export class UpdateSecurityDto{
-  id: number;
-  username: string;
-  name?: string;
-  surname?: string;
-  cuit?: string;
-  birth_date?: Date;
-  address?: AddressDto;
-}
+export class UpdateSecurityDto extends PartialType(CreateSecurityDto){}

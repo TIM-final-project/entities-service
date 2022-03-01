@@ -32,10 +32,10 @@ export class SecurityController {
 
   // @Put(':id')
   @MessagePattern('securities_update')
-  async update(@Body() security: UpdateSecurityDto): Promise<SecurityDto> {
-    console.log('Update securiy request ', { security });
-    const { id } = security;
-    delete security.id; 
-    return plainToInstance(SecurityDto, this.securityService.update(id, security));
+  async update(
+    updateDTO: {id: number, dto: UpdateSecurityDto },
+  ): Promise<SecurityDto> {
+    console.log('Update securiy request ', updateDTO.dto);
+    return plainToInstance(SecurityDto, this.securityService.update(updateDTO.id, updateDTO.dto));
   }
 }

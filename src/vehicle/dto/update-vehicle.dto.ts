@@ -1,7 +1,6 @@
-export class UpdateVehicleDto {
-  id: number;
-  plate: string;
-  brand: string;
-  model: string;
-  year: number;
-}
+import { OmitType, PartialType } from "@nestjs/swagger";
+import { CreateVehicleDto } from "./create-vehicle.dto";
+
+export class UpdateVehicleDto extends PartialType(
+  OmitType(CreateVehicleDto, ['contractorId'] as const),
+) {}

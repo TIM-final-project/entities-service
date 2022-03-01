@@ -52,8 +52,6 @@ export class ManagerService {
     id: number,
     managerDto: UpdateManagerDto,
   ): Promise<ManagerEntity> {
-    const { cuit } = managerDto;
-
     const manager: ManagerEntity = await this.managerRepository.findOne(id, {
       where: {
         active: true,
@@ -67,7 +65,7 @@ export class ManagerService {
       } catch (error) {
         this.logger.error('Error updating manager', { error });
         throw new RpcException({
-          message: `Ya existe un manager con el cuit: ${cuit}`,
+          message: `No es posible modificar el encargado`,
         })
       }
     } else {

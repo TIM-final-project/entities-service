@@ -1,12 +1,4 @@
-import { AddressDto } from "src/common/dto/address.dto";
+import { PartialType } from "@nestjs/swagger";
+import { CreateAuditorDto } from "./create-auditor.dto";
 
-export class UpdateAuditorDto {
-  id: number;
-  name?: string;
-  surname?: string;
-  phone?: string;
-  
-  cuit?: string;
-  birth_date?: Date;
-  address?: AddressDto;
-}
+export class UpdateAuditorDto extends PartialType(CreateAuditorDto) {}

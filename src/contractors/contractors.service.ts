@@ -54,7 +54,6 @@ export class ContractorsService {
   }
 
   create(contractorDTO: CreateContractorDto): Promise<ContractorEntity> {
-    this.logger.debug('Creating contractor', { contractorDTO });
     return this.contractorRepository.save(contractorDTO as ContractorEntity);
   }
 
@@ -63,7 +62,7 @@ export class ContractorsService {
     contractorDTO: UpdateContractorDto,
   ): Promise<ContractorEntity> {
     this.logger.debug('Attempt to update contractor.', { id, contractorDTO });
-    const { cuit } = contractorDTO;
+  
     const contractor: ContractorEntity =
       await this.contractorRepository.findOne(id, {
         where: {
@@ -71,6 +70,7 @@ export class ContractorsService {
         },
         relations: ['address']
       });
+      
     if (contractor) {
       this.contractorRepository.merge(contractor, contractorDTO);
       this.logger.debug('Contractor after merge', { contractor });
@@ -79,7 +79,7 @@ export class ContractorsService {
       } catch (error) {
         this.logger.error('Error updating Contractor', { error });
         throw new RpcException({
-          message: `Ya existe un contratista con el cuit: ${cuit}`,
+          message: `No es posible modificar el contratista`,
         });
       }
     } else {

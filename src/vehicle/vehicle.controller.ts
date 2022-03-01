@@ -46,10 +46,10 @@ export class VehicleController {
 
   // @Put(':id')  
   @MessagePattern('vehicles_update')
-  async update(@Body() vehicle: UpdateVehicleDto): Promise<VehicleDto> {
-    this.logger.debug('Update vehicle request ', { vehicle });
-    const { id } = vehicle;
-    delete vehicle.id;
-    return plainToInstance(VehicleDto, await this.vehicleService.update(id, vehicle));
+  async update(
+    updateDTO: {id: number, dto: UpdateVehicleDto },
+  ): Promise<VehicleDto> {
+    this.logger.debug('Update vehicle request ', updateDTO.dto);
+    return plainToInstance(VehicleDto, await this.vehicleService.update(updateDTO.id, updateDTO.dto));
   }
 }

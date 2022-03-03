@@ -9,5 +9,6 @@ export class CreateDriverDto {
   cuit: string;
   birth_date?: Date;
   contractorId: number;
-  address?: AddressDto
+  address?: AddressDto;
+  active: boolean;
 }

@@ -7,6 +7,8 @@ import { AuditorModule } from './auditor/auditor.module';
 import { ManagerModule } from './manager/manager.module';
 import { DriverModule } from './driver/driver.module';
 import { VehicleModule } from './vehicle/vehicle.module';
+import { VehicleTypesModule } from './vehicle-type/vehicle-type.module';
+import { ExpeditorModule } from './expeditor/expeditor.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { VehicleModule } from './vehicle/vehicle.module';
     ManagerModule,
     DriverModule,
     VehicleModule,
+    VehicleTypesModule,
+    ExpeditorModule
   ],
 })
 export class AppModule {}

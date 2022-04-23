@@ -1,4 +1,5 @@
 import { ContractorEntity } from 'src/contractors/contractor.entity';
+import { VehicleTypeEntity } from 'src/vehicle-type/vehicle-type.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
@@ -43,5 +44,12 @@ export class VehicleEntity {
     default: true,
   })
   active?: boolean;
+
+  @ManyToOne(
+    () => VehicleTypeEntity,
+    (type) => type.vehicles,
+    { nullable: true }
+  )
+  type?: VehicleTypeEntity;
 
 }

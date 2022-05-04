@@ -40,9 +40,9 @@ export class ExpeditorController {
   // @Put(':id')
   @MessagePattern('expeditors_update')
   async update(
-    updateDTO: {id: number, DTO: UpdateExpeditorDTO },
+    updateDTO: {id: number, dto: UpdateExpeditorDTO },
   ): Promise<ExpeditorDTO> {
-    console.log('Update Expeditor request ', updateDTO.DTO);
-    return this.ExpeditorService.update(updateDTO.id, updateDTO.DTO);
+    console.log('Update Expeditor request ', updateDTO.dto);
+    return this.ExpeditorService.update(updateDTO.id, updateDTO.dto);
   }
 }

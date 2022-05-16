@@ -7,4 +7,5 @@ export class CreateVehicleDto {
   year: number;
   contractorId: number;
   type?: VehicleTypeDto;
+  is_valid?: boolean;
 }

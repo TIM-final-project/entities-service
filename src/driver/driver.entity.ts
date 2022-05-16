@@ -11,6 +11,12 @@ export class DriverEntity extends GenericEntity {
   @Column({ nullable: true })
   birth_date?: Date;
 
+  @Column({ 
+    nullable: false,
+    default: true 
+  })
+  is_valid?: boolean;
+
   @ManyToOne((type) => ContractorEntity, (contractor) => contractor.drivers, {
     nullable: true,
   })

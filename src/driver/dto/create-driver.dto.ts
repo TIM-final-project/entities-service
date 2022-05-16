@@ -11,4 +11,5 @@ export class CreateDriverDto {
   contractorId: number;
   address?: AddressDto;
   active: boolean;
+  is_valid?: boolean;
 }

@@ -2,6 +2,7 @@ import { GenericEntity } from 'src/common/entities/generic_entity';
 import { DriverEntity } from 'src/driver/driver.entity';
 import { VehicleEntity } from 'src/vehicle/vehicle.entity';
 import {
+  Column,
   Entity,
   OneToMany,
 } from 'typeorm';
@@ -13,6 +14,12 @@ export class ContractorEntity extends GenericEntity{
     nullable: true,
   })
   drivers?: DriverEntity[];
+
+  @Column({ 
+    nullable: false,
+    default: true 
+  })
+  is_valid?: boolean;
 
   @OneToMany((type) => VehicleEntity, (vehicle) => vehicle.contractor, {
     nullable: true,

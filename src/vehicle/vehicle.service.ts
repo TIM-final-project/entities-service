@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { instanceToPlain, plainToClass, plainToInstance } from 'class-transformer';
 import { ContractorEntity } from 'src/contractors/contractor.entity';
 import { ContractorsService } from 'src/contractors/contractors.service';
 import { Repository } from 'typeorm';
@@ -75,6 +75,7 @@ export class VehicleService {
     this.logger.debug(`Contractor ${contractorId} found`, { contractor });
     
     try {
+      
       const vehicle: VehicleEntity = vehicleDto;
       vehicle.contractor = contractor;
       return await this.vehicleRepository.save(vehicle);

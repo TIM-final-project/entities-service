@@ -7,4 +7,5 @@ export class CreateContractorDto {
   email: string;
   phone?: string;
   address: AddressDto;
+  is_valid?: boolean;
 }

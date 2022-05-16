@@ -45,11 +45,16 @@ export class VehicleEntity {
   })
   active?: boolean;
 
+  @Column({ 
+    nullable: false,
+    default: true
+  })
+  is_valid?: boolean;
+
   @ManyToOne(
     () => VehicleTypeEntity,
     (type) => type.vehicles,
     { nullable: true }
   )
   type?: VehicleTypeEntity;
-
 }

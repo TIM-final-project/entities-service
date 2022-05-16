@@ -13,7 +13,7 @@ export class DriverEntity extends GenericEntity {
 
   @Column({ 
     nullable: false,
-    default: true 
+    default: false 
   })
   is_valid?: boolean;
 

@@ -47,7 +47,7 @@ export class VehicleEntity {
 
   @Column({ 
     nullable: false,
-    default: true
+    default: false
   })
   is_valid?: boolean;
 

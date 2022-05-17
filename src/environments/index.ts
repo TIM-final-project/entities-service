@@ -32,8 +32,14 @@ const typeorm_conf = {
 
 const TYPEORM = typeorm_conf[NODE_ENV];
 
+//New Relic
+const NEW_RELIC_LICENSE_KEY = process.env.NEW_RELIC_LICENSE_KEY;
+const NEW_RELIC_APP_NAME = process.env.NEW_RELIC_APP_NAME;
+
 export {
     NODE_ENV,
     PORT,
-    TYPEORM
+    TYPEORM,
+    NEW_RELIC_APP_NAME,
+    NEW_RELIC_LICENSE_KEY
 }

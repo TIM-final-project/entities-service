@@ -36,6 +36,8 @@ export class VehicleService {
       });
     }
 
+    relations.push('type');
+
     return this.vehicleRepository.find({ 
       where: {
         active: true,
@@ -52,6 +54,8 @@ export class VehicleService {
     const vehicle = await this.vehicleRepository.findOne(id, {
       relations
     });
+
+    relations.push('type');
 
     if (vehicle) {
       return vehicle;

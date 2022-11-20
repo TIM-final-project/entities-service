@@ -9,7 +9,6 @@ import { DriverModule } from './driver/driver.module';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { VehicleTypesModule } from './vehicle-type/vehicle-type.module';
 import { ExpeditorModule } from './expeditor/expeditor.module';
-import { ShittyManagerModule } from './shitty-manager/shitty-manager.module';
 
 @Module({
   imports: [
@@ -25,8 +24,7 @@ import { ShittyManagerModule } from './shitty-manager/shitty-manager.module';
     DriverModule,
     VehicleModule,
     VehicleTypesModule,
-    ExpeditorModule,
-    ShittyManagerModule
+    ExpeditorModule
   ],
 })
 export class AppModule {}

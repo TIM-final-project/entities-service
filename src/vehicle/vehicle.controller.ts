@@ -1,5 +1,5 @@
-import { Body, Controller, Logger } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { Body, Controller, HttpStatus, Logger } from '@nestjs/common';
+import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
@@ -23,16 +23,30 @@ export class VehicleController {
   @MessagePattern('vehicles_find_all')
   async findAll(vehicleQPs: VehiclesQPs): Promise<VehicleDto[]> {
     this.logger.debug('Getting vehicles', { vehicleQPs });
-    const vehicles: VehicleEntity[] = await this.vehicleService.findAll(vehicleQPs);
-    return vehicles.map((vehicle : VehicleEntity) => plainToInstance(VehicleDto, vehicle));
+    const vehicles: VehicleEntity[] = await this.vehicleService.findAll(
+      vehicleQPs,
+    );
+    return vehicles.map((vehicle: VehicleEntity) =>
+      plainToInstance(VehicleDto, vehicle),
+    );
   }
 
   // @Get(':id')
   @MessagePattern('vehicles_find_by_id')
   async findOne({ id, vehicleQPs }: header): Promise<VehicleDto> {
-    console.log(vehicleQPs);
     this.logger.debug('Getting vehicle by id', { id, vehicleQPs });
-    return plainToInstance(VehicleDto, await this.vehicleService.findOne(id, vehicleQPs));
+
+    if (!id) {
+      throw new RpcException({
+        message: `Missing id`,
+        status: HttpStatus.BAD_REQUEST,
+      });
+    }
+
+    return plainToInstance(
+      VehicleDto,
+      await this.vehicleService.findOne(id, vehicleQPs),
+    );
   }
 
   // @Post()
@@ -41,15 +55,22 @@ export class VehicleController {
     this.logger.debug('Creating Contractor', { vehicle });
     const { contractorId } = vehicle;
     delete vehicle.contractorId;
-    return plainToInstance(VehicleDto, await this.vehicleService.create(contractorId, vehicle));
+    return plainToInstance(
+      VehicleDto,
+      await this.vehicleService.create(contractorId, vehicle),
+    );
   }
 
-  // @Put(':id')  
+  // @Put(':id')
   @MessagePattern('vehicles_update')
-  async update(
-    updateDTO: {id: number, dto: UpdateVehicleDto },
-  ): Promise<VehicleDto> {
+  async update(updateDTO: {
+    id: number;
+    dto: UpdateVehicleDto;
+  }): Promise<VehicleDto> {
     this.logger.debug('Update vehicle request ', updateDTO.dto);
-    return plainToInstance(VehicleDto, await this.vehicleService.update(updateDTO.id, updateDTO.dto));
+    return plainToInstance(
+      VehicleDto,
+      await this.vehicleService.update(updateDTO.id, updateDTO.dto),
+    );
   }
 }

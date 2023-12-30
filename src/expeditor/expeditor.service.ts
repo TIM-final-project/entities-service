@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateExpeditorDTO } from './dto/expeditor-create.dto';
 import { UpdateExpeditorDTO } from './dto/update-expeditor.dto';
 import { ExpeditorEntity } from './expeditor.entity';
+import { ExpeditorQPs } from './dto/expeditor.qps';
 
 @Injectable()
 export class ExpeditorService {
@@ -15,16 +16,22 @@ export class ExpeditorService {
     private ExpeditorRepository: Repository<ExpeditorEntity>,
   ) {}
 
+  
   /**
-   * The `findAll` function returns a promise that resolves to an array of `ExpeditorEntity` objects,
-   * filtered by the `active` property and including the `address` relation.
-   * @returns The `findAll()` method is returning a Promise that resolves to an array of
+   * The function `findAll` retrieves a list of active `ExpeditorEntity` objects based on the provided
+   * `expeditorQPs` query parameters, including the related `address` entity.
+   * @param {ExpeditorQPs} expeditorQPs - expeditorQPs is an object that contains query parameters for
+   * filtering the results of the find operation. It is of type ExpeditorQPs, which is a custom type or
+   * interface that defines the available query parameters for the Expeditor entity.
+   * @returns The function `findAll` is returning a Promise that resolves to an array of
    * `ExpeditorEntity` objects.
    */
-  findAll(): Promise<ExpeditorEntity[]> {
+  findAll(expeditorQPs :ExpeditorQPs): Promise<ExpeditorEntity[]> {
+    this.logger.debug('Expeditor find all', { expeditorQPs });
     return this.ExpeditorRepository.find({
       where: {
         active: true,
+        ...expeditorQPs
       },
       relations: ['address']
     });

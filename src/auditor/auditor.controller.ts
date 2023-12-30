@@ -14,6 +14,9 @@ export class AuditorController {
   constructor(private auditorService: AuditorService) {}
 
   // @Get()
+  /* The `@MessagePattern('auditors_find_all')` decorator is used to define a message pattern for a
+  method in a NestJS controller. In this case, it is defining the message pattern for the `findAll`
+  method in the `AuditorController` class. */
   @MessagePattern('auditors_find_all')
   async findAll(): Promise<AuditorDto[]> {
     const auditors: AuditorEntity[] = await this.auditorService.findAll();
@@ -21,12 +24,20 @@ export class AuditorController {
   }
 
   // @Get(':id')
+  /* The `@MessagePattern('auditors_find_by_id')` decorator is used to define a message pattern for the
+  `findOne` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_find_by_id'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_find_by_id')
   async finOne(id: number): Promise<AuditorDto> {
     return plainToInstance(AuditorDto, await this.auditorService.findOne(id));
   }
 
+
+
   // @Post()
+  /* The `@MessagePattern('auditors_create')` decorator is used to define a message pattern for the
+  `create` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_create'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_create')
   async create(auditor: CreateAuditorDto): Promise<AuditorDto> {
     this.logger.debug('Creating Contractor', { auditor });
@@ -41,6 +52,9 @@ export class AuditorController {
   }
 
   // @Put(':id')
+  /* The `@MessagePattern('auditors_update')` decorator is used to define a message pattern for the
+  `update` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_update'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_update')
   async update(    
     updateDTO: {id: number, dto: UpdateAuditorDto }

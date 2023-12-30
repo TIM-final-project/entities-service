@@ -20,18 +20,28 @@ export class ShittyManagerController {
   constructor(private shittyManagerService: ShittyManagerService) {}
 
   // @Get()
+  /* The `@MessagePattern('shittymanagers_find_all')` decorator is used to define a message pattern for
+  a method in a NestJS controller. In this case, it is defining the message pattern for the
+  `findAll` method in the `ShittyManagerController` class. */
   @MessagePattern('shittymanagers_find_all')
   async findAll(): Promise<ShittyManagerDto[]> {
     return this.shittyManagerService.findAll();
   }
 
   // @Get(':id')
+  /* The `@MessagePattern('shittymanagers_find_by_id')` decorator is used to define a message pattern
+  for the `findOne` method in the `ShittyManagerController` class. This means that this method will
+  be triggered when a message with the pattern `'shittymanagers_find_by_id'` is received by the
+  controller. */
   @MessagePattern('shittymanagers_find_by_id')
   async findOne(@Body('id') id: number): Promise<ShittyManagerDto> {
     return this.shittyManagerService.findOne(id);
   }
 
   // @Post()
+  /* The `@MessagePattern('shittymanagers_create')` decorator is used to define a message pattern for
+  the `create` method in the `ShittyManagerController` class. This means that this method will be
+  triggered when a message with the pattern `'shittymanagers_create'` is received by the controller. */
   @MessagePattern('shittymanagers_create')
   async create(
     @Body() manager: CreateShittyManagerDto,
@@ -48,6 +58,9 @@ export class ShittyManagerController {
   }
 
   // @Put(':id')
+  /* The `@MessagePattern('shittymanagers_update')` decorator is used to define a message pattern for
+  the `update` method in the `ShittyManagerController` class. This means that this method will be
+  triggered when a message with the pattern `'shittymanagers_update'` is received by the controller. */
   @MessagePattern('shittymanagers_update')
   async update(updateDTO: {
     id: number;

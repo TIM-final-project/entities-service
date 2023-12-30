@@ -8,4 +8,5 @@ export class SecurityEntity extends GenericEntity {
 
   @Column({ nullable: true })
   birth_date?: Date;
+
 }

@@ -9,4 +9,5 @@ export class CreateShittyManagerDto {
   cuit: string;
   birth_date?: Date;
   address?: AddressDto;
+  plant: number;
 }

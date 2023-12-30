@@ -6,6 +6,7 @@ import { AuditorService } from './auditor.service';
 import { AuditorDto } from './dto/auditor.dto';
 import { CreateAuditorDto } from './dto/create-auditor.dto';
 import { UpdateAuditorDto } from './dto/update-auditor.dto';
+import { AuditorQPs } from './dto/auditor.qps';
 
 @Controller('auditors')
 export class AuditorController {
@@ -14,12 +15,15 @@ export class AuditorController {
   constructor(private auditorService: AuditorService) {}
 
   // @Get()
-  /* The `@MessagePattern('auditors_find_all')` decorator is used to define a message pattern for a
-  method in a NestJS controller. In this case, it is defining the message pattern for the `findAll`
-  method in the `AuditorController` class. */
+  /* The `@MessagePattern('auditors_find_all')` decorator is used to define a message pattern for the
+  `findAll` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_find_all'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_find_all')
-  async findAll(): Promise<AuditorDto[]> {
-    const auditors: AuditorEntity[] = await this.auditorService.findAll();
+  async findAll( auditorQPs : AuditorQPs ): Promise<AuditorDto[]> {
+    this.logger.debug('Getting auditors', { auditorQPs });
+    const auditors: AuditorEntity[] = await this.auditorService.findAll(
+      auditorQPs,
+    );
     return auditors.map((auditor: AuditorEntity) => plainToInstance(AuditorDto, auditor));
   }
 

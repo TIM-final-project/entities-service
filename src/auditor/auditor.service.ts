@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { AuditorEntity } from './auditor.entity';
 import { CreateAuditorDto } from './dto/create-auditor.dto';
 import { UpdateAuditorDto } from './dto/update-auditor.dto';
+import { AuditorQPs } from './dto/auditor.qps';
 
 @Injectable()
 export class AuditorService {
@@ -15,16 +16,22 @@ export class AuditorService {
     private auditorRepository: Repository<AuditorEntity>,
   ) {}
 
+  
   /**
-   * The `findAll` function returns a promise that resolves to an array of `AuditorEntity` objects with
-   * their associated `address` relations, where the `active` property is true.
-   * @returns The `findAll()` method is returning a Promise that resolves to an array of
+   * The function `findAll` retrieves all active auditors with the specified query parameters and their
+   * associated addresses.
+   * @param {AuditorQPs} auditorQPs - AuditorQPs is an object that represents the query parameters for
+   * finding auditors. It may contain properties such as name, email, phone number, or any other
+   * criteria that can be used to filter the auditors.
+   * @returns The function `findAll` is returning a Promise that resolves to an array of
    * `AuditorEntity` objects.
    */
-  findAll(): Promise<AuditorEntity[]> {
+  findAll(auditorQPs: AuditorQPs): Promise<AuditorEntity[]> {
+    this.logger.debug('Auditors find all', { auditorQPs });
     return this.auditorRepository.find({
       where: {
         active: true,
+        ...auditorQPs
       },
       relations: ['address']
     });

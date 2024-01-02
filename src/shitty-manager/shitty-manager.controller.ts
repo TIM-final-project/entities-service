@@ -12,6 +12,9 @@ import { CreateShittyManagerDto } from './dto/create-shitty-manager.dto';
 import { ShittyManagerDto } from './dto/shitty-manager.dto';
 import { UpdateShittyManagerDto } from './dto/update-shitty-manager.dto';
 import { ShittyManagerService } from './shitty-manager.service';
+import { ShittyManagerQPs } from './dto/shitty-manager.qps';
+import { ShittyManagerEntity } from './shitty-manager.entity';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('shitty-managers')
 export class ShittyManagerController {
@@ -24,8 +27,13 @@ export class ShittyManagerController {
   a method in a NestJS controller. In this case, it is defining the message pattern for the
   `findAll` method in the `ShittyManagerController` class. */
   @MessagePattern('shittymanagers_find_all')
-  async findAll(): Promise<ShittyManagerDto[]> {
-    return this.shittyManagerService.findAll();
+  async findAll(shittyManagerQPs : ShittyManagerQPs): Promise<ShittyManagerDto[]> {
+    this.logger.debug('Getting all shitty managers', { shittyManagerQPs });
+    const shittyManagers : ShittyManagerQPs[] = await this.shittyManagerService.findAll(      shittyManagerQPs    );
+    return shittyManagers.map((shittyManager : ShittyManagerEntity) => plainToInstance(
+      ShittyManagerDto,
+      shittyManager,
+    ))
   }
 
   // @Get(':id')

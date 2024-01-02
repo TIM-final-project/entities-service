@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateManagerDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { ManagerEntity } from './manager.entity';
+import { ManagerQPs } from './dto/manager.qps';
 
 @Injectable()
 export class ManagerService {
@@ -21,10 +22,12 @@ export class ManagerService {
    * @returns The `findAll()` method is returning a Promise that resolves to an array of
    * `ManagerEntity` objects.
    */
-  findAll(): Promise<ManagerEntity[]> {
+  findAll(managerQPs : ManagerQPs): Promise<ManagerEntity[]> {
+    this.logger.debug('Getting all managers', { managerQPs });
     return this.managerRepository.find({
       where: {
         active: true,
+        ...managerQPs
       },
       relations: ['address']
     });

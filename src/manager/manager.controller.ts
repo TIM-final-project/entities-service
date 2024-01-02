@@ -4,6 +4,8 @@ import { CreateManagerDto } from './dto/create-manager.dto';
 import { ManagerDto } from './dto/manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { ManagerService } from './manager.service';
+import { ManagerQPs } from './dto/manager.qps';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('managers')
 export class ManagerController {
@@ -16,8 +18,12 @@ export class ManagerController {
   method in a NestJS controller. In this case, it is used to define the message pattern for the
   `findAll` method in the `ManagerController` class. */
   @MessagePattern('managers_find_all')
-  async findAll(): Promise<ManagerDto[]> {
-    return this.managerService.findAll();
+  async findAll(managerQPs : ManagerQPs): Promise<ManagerDto[]> {
+    this.logger.debug('Getting all managers', { managerQPs });
+    const managers: ManagerDto[] = await this.managerService.findAll(
+      managerQPs,
+    );
+    return managers.map((manager: ManagerDto) => plainToInstance(ManagerDto, manager));
   }
 
   // @Get(':id')

@@ -6,6 +6,7 @@ import { SecurityDto } from './dto/security.dto';
 import { UpdateSecurityDto } from './dto/update-security.dto';
 import { SecurityEntity } from './security.entity';
 import { SecurityService } from './security.service';
+import { SecurityQPs } from './dto/security.qps';
 
 @Controller('securities')
 export class SecurityController {
@@ -16,8 +17,10 @@ export class SecurityController {
   method in a NestJS controller. In this case, it is defining the message pattern for the `findAll`
   method in the `SecurityController` class. */
   @MessagePattern('securities_find_all')
-  async findAll(): Promise<SecurityDto[]> {
-    const securities: SecurityEntity[] = await this.securityService.findAll();
+  async findAll(securityQPs : SecurityQPs): Promise<SecurityDto[]> {
+    const securities: SecurityEntity[] = await this.securityService.findAll(
+      securityQPs,
+    );
     return securities.map((security: SecurityEntity) => plainToInstance(SecurityDto, security ));
   }
 

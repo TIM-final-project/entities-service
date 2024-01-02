@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateSecurityDto } from './dto/create-security.dto';
 import { UpdateSecurityDto } from './dto/update-security.dto';
 import { SecurityEntity } from './security.entity';
+import { SecurityQPs } from './dto/security.qps';
 
 @Injectable()
 export class SecurityService {
@@ -21,10 +22,12 @@ export class SecurityService {
    * @returns The `findAll()` method is returning a Promise that resolves to an array of
    * `SecurityEntity` objects.
    */
-  findAll(): Promise<SecurityEntity[]> {
+  findAll(securityQPs : SecurityQPs ): Promise<SecurityEntity[]> {
+    this.logger.debug('Security find all', { securityQPs });
     return this.securityRepository.find({
       where: {
         active: true,
+        ...securityQPs
       },
       relations: ['address'],
     });

@@ -1,3 +1,6 @@
+import { IsPositive } from "class-validator";
+
 export class ShittyManagerQPs{
-    plant?:number;
+    @IsPositive()
+    plant?: number;
 }

@@ -19,6 +19,7 @@ export class ManagerController {
   `findAll` method in the `ManagerController` class. */
   @MessagePattern('managers_find_all')
   async findAll(managerQPs : ManagerQPs): Promise<ManagerDto[]> {
+    console.log('Manager QPs:', managerQPs);
     this.logger.debug('Getting all managers', { managerQPs });
     const managers: ManagerDto[] = await this.managerService.findAll(
       managerQPs,

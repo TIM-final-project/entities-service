@@ -12,4 +12,9 @@ export class AuditorEntity extends GenericEntity {
   @Column({ nullable: true })
   birth_date: Date;
 
+  @Column({ 
+    nullable: false 
+  })
+  plant:number;
+
 }

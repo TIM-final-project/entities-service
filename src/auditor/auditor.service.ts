@@ -28,6 +28,8 @@ export class AuditorService {
    */
   findAll(auditorQPs: AuditorQPs): Promise<AuditorEntity[]> {
     this.logger.debug('Auditors find all', { auditorQPs });
+
+
     return this.auditorRepository.find({
       where: {
         active: true,

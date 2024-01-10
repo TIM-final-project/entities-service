@@ -1,6 +1,7 @@
-import { IsPositive } from "class-validator";
+import { IsOptional, IsPositive } from "class-validator";
 
 export class AuditorQPs{
     @IsPositive()
+    @IsOptional()
     plant?: number;
 }

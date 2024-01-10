@@ -50,9 +50,4 @@ export abstract class GenericEntity{
         default: true,
     })
     active?: boolean;
-
-    @Column({ 
-        nullable: false 
-      })
-      plant:number;
 }

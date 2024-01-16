@@ -22,6 +22,13 @@ export class VehicleService {
     private contractorsService: ContractorsService,
   ) {}
 
+  /**
+   * This function finds all vehicle entities based on the given query parameters.
+   * @param {VehiclesQPs} vehicleQPs - The parameter `vehicleQPs` is an object that represents the
+   * query parameters for finding vehicles. It may have the following properties:
+   * @returns The function `findAll` returns a Promise that resolves to an array of `VehicleEntity`
+   * objects.
+   */
   findAll(vehicleQPs: VehiclesQPs): Promise<VehicleEntity[]> {
     this.logger.debug('Drivers find all', { vehicleQPs });
     let relations = vehicleQPs?.relations ? vehicleQPs.relations.split(',') : [];
@@ -47,6 +54,15 @@ export class VehicleService {
     });
   }
 
+  /**
+   * The function findOne retrieves a vehicle entity by its id, with optional query parameters, and
+   * returns it as a promise.
+   * @param {number} id - The `id` parameter is the unique identifier of the vehicle that you want to
+   * find. It is of type `number`.
+   * @param {VehiclesQPs} [vehicleQPs] - vehicleQPs is an optional parameter of type VehiclesQPs. It is
+   * used to specify additional query parameters for retrieving the vehicle entity.
+   * @returns a Promise that resolves to a VehicleEntity object.
+   */
   async findOne(id: number, vehicleQPs?: VehiclesQPs): Promise<VehicleEntity> {
     this.logger.debug('Getting vehicle', { id, vehicleQPs });
     let relations = vehicleQPs?.relations ? vehicleQPs.relations.split(',') : [];
@@ -67,6 +83,16 @@ export class VehicleService {
     }
   }
 
+  /**
+   * This function creates a vehicle entity associated with a contractor entity and returns the created
+   * vehicle.
+   * @param {number} contractorId - The contractorId parameter is a number that represents the ID of
+   * the contractor associated with the vehicle being created.
+   * @param {CreateVehicleDto} vehicleDto - The vehicleDto parameter is an object of type
+   * CreateVehicleDto. It contains the information needed to create a new vehicle, such as the
+   * vehicle's plate number, make, model, and year.
+   * @returns a Promise that resolves to a VehicleEntity object.
+   */
   async create(
     contractorId: number,
     vehicleDto: CreateVehicleDto,
@@ -91,6 +117,15 @@ export class VehicleService {
     }
   }
 
+  /**
+   * The `update` function updates a vehicle entity in the database based on the provided ID and
+   * vehicle data.
+   * @param {number} id - The id parameter is a number that represents the unique identifier of the
+   * vehicle that needs to be updated.
+   * @param {UpdateVehicleDto} vehicleDto - The `vehicleDto` parameter is an object of type
+   * `UpdateVehicleDto` which contains the updated information for a vehicle.
+   * @returns a Promise that resolves to a VehicleEntity object.
+   */
   async update(
     id: number,
     vehicleDto: UpdateVehicleDto,

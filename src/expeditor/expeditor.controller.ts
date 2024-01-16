@@ -4,6 +4,9 @@ import { CreateExpeditorDTO } from './dto/expeditor-create.dto';
 import { ExpeditorDTO } from './dto/expeditor.dto';
 import { UpdateExpeditorDTO } from './dto/update-expeditor.dto';
 import { ExpeditorService } from './expeditor.service';
+import { ExpeditorQPs } from './dto/expeditor.qps';
+import { plainToInstance } from 'class-transformer';
+import { ExpeditorEntity } from './expeditor.entity';
 
 @Controller('Expeditors')
 export class ExpeditorController {
@@ -13,8 +16,13 @@ export class ExpeditorController {
 
   // @Get()
   @MessagePattern('expeditors_find_all')
-  async findAll(): Promise<ExpeditorDTO[]> {
-    return this.ExpeditorService.findAll();
+  async findAll(expedirtorQPs : ExpeditorQPs): Promise<ExpeditorDTO[]> {
+    this.logger.debug('Getting Expeditors', { expedirtorQPs });
+    const expeditors: ExpeditorDTO[] = await this.ExpeditorService.findAll(
+      expedirtorQPs,
+    );
+    return expeditors.map((expeditor: ExpeditorEntity) => 
+    plainToInstance(ExpeditorDTO, expeditor));
   }
 
   // @Get(':id')
@@ -22,6 +30,7 @@ export class ExpeditorController {
   async findOne(@Body('id') id: number): Promise<ExpeditorDTO> {
     return this.ExpeditorService.findOne(id);
   }
+
 
   // @Post()
   @MessagePattern('expeditors_create')

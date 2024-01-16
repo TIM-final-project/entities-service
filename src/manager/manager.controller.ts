@@ -4,6 +4,8 @@ import { CreateManagerDto } from './dto/create-manager.dto';
 import { ManagerDto } from './dto/manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { ManagerService } from './manager.service';
+import { ManagerQPs } from './dto/manager.qps';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('managers')
 export class ManagerController {
@@ -12,18 +14,32 @@ export class ManagerController {
   constructor(private managerService: ManagerService) {}
 
   // @Get()
+  /* The `@MessagePattern('managers_find_all')` decorator is used to define a message pattern for a
+  method in a NestJS controller. In this case, it is used to define the message pattern for the
+  `findAll` method in the `ManagerController` class. */
   @MessagePattern('managers_find_all')
-  async findAll(): Promise<ManagerDto[]> {
-    return this.managerService.findAll();
+  async findAll(managerQPs : ManagerQPs): Promise<ManagerDto[]> {
+    console.log('Manager QPs:', managerQPs);
+    this.logger.debug('Getting all managers', { managerQPs });
+    const managers: ManagerDto[] = await this.managerService.findAll(
+      managerQPs,
+    );
+    return managers.map((manager: ManagerDto) => plainToInstance(ManagerDto, manager));
   }
 
   // @Get(':id')
+  /* The `@MessagePattern('managers_find_by_id')` decorator is used to define a message pattern for the
+  `findOne` method in the `ManagerController` class. This means that when a message with the pattern
+  `'managers_find_by_id'` is received by the controller, it will trigger the `findOne` method. */
   @MessagePattern('managers_find_by_id')
   async findOne(@Body('id') id: number): Promise<ManagerDto> {
     return this.managerService.findOne(id);
   }
 
   // @Post()
+  /* The `@MessagePattern('managers_create')` decorator is used to define a message pattern for the
+  `create` method in the `ManagerController` class. This means that when a message with the pattern
+  `'managers_create'` is received by the controller, it will trigger the `create` method. */
   @MessagePattern('managers_create')
   async create(@Body() manager: CreateManagerDto): Promise<ManagerDto> {
     this.logger.debug('Creating manager', { manager });
@@ -38,6 +54,9 @@ export class ManagerController {
   }
 
   // @Put(':id')
+  /* The `@MessagePattern('managers_update')` decorator is used to define a message pattern for the
+  `update` method in the `ManagerController` class. This means that when a message with the pattern
+  `'managers_update'` is received by the controller, it will trigger the `update` method. */
   @MessagePattern('managers_update')
   async update(
     updateDTO: {id: number, dto: UpdateManagerDto },

@@ -6,6 +6,7 @@ import { AuditorService } from './auditor.service';
 import { AuditorDto } from './dto/auditor.dto';
 import { CreateAuditorDto } from './dto/create-auditor.dto';
 import { UpdateAuditorDto } from './dto/update-auditor.dto';
+import { AuditorQPs } from './dto/auditor.qps';
 
 @Controller('auditors')
 export class AuditorController {
@@ -14,19 +15,33 @@ export class AuditorController {
   constructor(private auditorService: AuditorService) {}
 
   // @Get()
+  /* The `@MessagePattern('auditors_find_all')` decorator is used to define a message pattern for the
+  `findAll` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_find_all'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_find_all')
-  async findAll(): Promise<AuditorDto[]> {
-    const auditors: AuditorEntity[] = await this.auditorService.findAll();
+  async findAll( auditorQPs : AuditorQPs ): Promise<AuditorDto[]> {
+    this.logger.debug('Getting auditors', { auditorQPs });
+    const auditors: AuditorEntity[] = await this.auditorService.findAll(
+      auditorQPs,
+    );
     return auditors.map((auditor: AuditorEntity) => plainToInstance(AuditorDto, auditor));
   }
 
   // @Get(':id')
+  /* The `@MessagePattern('auditors_find_by_id')` decorator is used to define a message pattern for the
+  `findOne` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_find_by_id'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_find_by_id')
   async finOne(id: number): Promise<AuditorDto> {
     return plainToInstance(AuditorDto, await this.auditorService.findOne(id));
   }
 
+
+
   // @Post()
+  /* The `@MessagePattern('auditors_create')` decorator is used to define a message pattern for the
+  `create` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_create'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_create')
   async create(auditor: CreateAuditorDto): Promise<AuditorDto> {
     this.logger.debug('Creating Contractor', { auditor });
@@ -41,6 +56,9 @@ export class AuditorController {
   }
 
   // @Put(':id')
+  /* The `@MessagePattern('auditors_update')` decorator is used to define a message pattern for the
+  `update` method in the `AuditorController` class. This means that when a message with the pattern
+  `'auditors_update'` is received by the microservice, it will be routed to this method. */
   @MessagePattern('auditors_update')
   async update(    
     updateDTO: {id: number, dto: UpdateAuditorDto }

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateExpeditorDTO } from './dto/expeditor-create.dto';
 import { UpdateExpeditorDTO } from './dto/update-expeditor.dto';
 import { ExpeditorEntity } from './expeditor.entity';
+import { ExpeditorQPs } from './dto/expeditor.qps';
 
 @Injectable()
 export class ExpeditorService {
@@ -15,15 +16,34 @@ export class ExpeditorService {
     private ExpeditorRepository: Repository<ExpeditorEntity>,
   ) {}
 
-  findAll(): Promise<ExpeditorEntity[]> {
+  
+  /**
+   * The function `findAll` retrieves a list of active `ExpeditorEntity` objects based on the provided
+   * `expeditorQPs` query parameters, including the related `address` entity.
+   * @param {ExpeditorQPs} expeditorQPs - expeditorQPs is an object that contains query parameters for
+   * filtering the results of the find operation. It is of type ExpeditorQPs, which is a custom type or
+   * interface that defines the available query parameters for the Expeditor entity.
+   * @returns The function `findAll` is returning a Promise that resolves to an array of
+   * `ExpeditorEntity` objects.
+   */
+  findAll(expeditorQPs :ExpeditorQPs): Promise<ExpeditorEntity[]> {
+    this.logger.debug('Expeditor find all', { expeditorQPs });
     return this.ExpeditorRepository.find({
       where: {
         active: true,
+        ...expeditorQPs
       },
       relations: ['address']
     });
   }
 
+  /**
+   * This function retrieves an ExpeditorEntity object with the specified id, including its related
+   * address, and throws an error if no ExpeditorEntity is found.
+   * @param {number} id - The `id` parameter is a number that represents the unique identifier of the
+   * Expeditor entity that we want to retrieve.
+   * @returns a Promise that resolves to an instance of the ExpeditorEntity class.
+   */
   async findOne(id: number): Promise<ExpeditorEntity> {
     this.logger.debug('Getting Expeditor', { id });
     const Expeditor = await this.ExpeditorRepository.findOne(id, {
@@ -43,11 +63,28 @@ export class ExpeditorService {
     }
   }
 
+  /**
+   * The function creates a new ExpeditorEntity object based on the provided CreateExpeditorDTO and
+   * saves it to the ExpeditorRepository.
+   * @param {CreateExpeditorDTO} ExpeditorDto - CreateExpeditorDTO is a data transfer object that
+   * contains the information needed to create a new ExpeditorEntity. It likely includes properties
+   * such as name, email, phone number, and address.
+   * @returns a Promise that resolves to an instance of ExpeditorEntity.
+   */
   create(ExpeditorDto: CreateExpeditorDTO): Promise<ExpeditorEntity> {
     const Expeditor: ExpeditorEntity = ExpeditorDto;
     return this.ExpeditorRepository.save(Expeditor);
   }
 
+  /**
+   * The function updates an ExpeditorEntity object with the provided data and returns the updated
+   * object.
+   * @param {number} id - The id parameter is a number that represents the unique identifier of the
+   * Expeditor entity that needs to be updated.
+   * @param {UpdateExpeditorDTO} ExpeditorDto - The `ExpeditorDto` parameter is an object that contains
+   * the updated information for the Expeditor. It is of type `UpdateExpeditorDTO`.
+   * @returns a Promise that resolves to an instance of the ExpeditorEntity class.
+   */
   async update(
     id: number,
     ExpeditorDto: UpdateExpeditorDTO,

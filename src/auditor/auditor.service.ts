@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { AuditorEntity } from './auditor.entity';
 import { CreateAuditorDto } from './dto/create-auditor.dto';
 import { UpdateAuditorDto } from './dto/update-auditor.dto';
+import { AuditorQPs } from './dto/auditor.qps';
 
 @Injectable()
 export class AuditorService {
@@ -15,15 +16,36 @@ export class AuditorService {
     private auditorRepository: Repository<AuditorEntity>,
   ) {}
 
-  findAll(): Promise<AuditorEntity[]> {
+  
+  /**
+   * The function `findAll` retrieves all active auditors with the specified query parameters and their
+   * associated addresses.
+   * @param {AuditorQPs} auditorQPs - AuditorQPs is an object that represents the query parameters for
+   * finding auditors. It may contain properties such as name, email, phone number, or any other
+   * criteria that can be used to filter the auditors.
+   * @returns The function `findAll` is returning a Promise that resolves to an array of
+   * `AuditorEntity` objects.
+   */
+  findAll(auditorQPs: AuditorQPs): Promise<AuditorEntity[]> {
+    this.logger.debug('Auditors find all', { auditorQPs });
+
+
     return this.auditorRepository.find({
       where: {
-        active: true
+        active: true,
+        ...auditorQPs
       },
       relations: ['address']
     });
   }
 
+  /**
+   * The function findOne retrieves an auditor entity with a specific id, including its address, and
+   * throws an error if no auditor is found.
+   * @param {number} id - The `id` parameter is a number that represents the unique identifier of the
+   * auditor entity that needs to be retrieved.
+   * @returns a Promise that resolves to an instance of the AuditorEntity class.
+   */
   async findOne(id: number): Promise<AuditorEntity> {
     this.logger.debug('Getting auditor', { id });
     const auditor = await this.auditorRepository.findOne(id, {
@@ -42,11 +64,25 @@ export class AuditorService {
     }
   }
 
+  /**
+   * The function creates a new auditor entity and saves it to the auditor repository.
+   * @param {CreateAuditorDto} auditorDto - The `auditorDto` parameter is an object of type
+   * `CreateAuditorDto`. It contains the data needed to create a new `AuditorEntity` object.
+   * @returns a Promise that resolves to an instance of the AuditorEntity class.
+   */
   create(auditorDto: CreateAuditorDto): Promise<AuditorEntity> {
     this.logger.debug('Creating auditor', { auditorDto });
     return this.auditorRepository.save(auditorDto as AuditorEntity);
   }
 
+  /**
+   * This function updates an auditor entity in the database based on the provided ID and DTO.
+   * @param {number} id - The id parameter is a number that represents the unique identifier of the
+   * auditor entity that needs to be updated.
+   * @param {UpdateAuditorDto} auditorDto - The `auditorDto` parameter is an object of type
+   * `UpdateAuditorDto` which contains the updated information for the auditor.
+   * @returns a Promise that resolves to an instance of the AuditorEntity class.
+   */
   async update(
     id: number,
     auditorDto: UpdateAuditorDto,
